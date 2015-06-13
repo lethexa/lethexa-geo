@@ -85,6 +85,16 @@
 
     var DEFAULT_ELLIPSOID = exports.EARTH;
     var EPSILON = 0.001;
+    var toRange0_2PI = function (x)
+    {
+        var twoPI = 2.0 * Math.PI;
+        while (x >= twoPI)
+            x -= twoPI;
+        while (x < 0.0)
+            x += twoPI;
+        return x;
+    };
+
 
     exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
         this._ellipsoid = ellipsoid || DEFAULT_ELLIPSOID;
@@ -184,15 +194,6 @@
     };
         
 
-    var toRange0_2PI = function (x)
-    {
-        var twoPI = 2.0 * Math.PI;
-        while (x >= twoPI)
-            x -= twoPI;
-        while (x < 0.0)
-            x += twoPI;
-        return x;
-    };
 
 })(typeof exports === 'undefined' ? this.geo = {} : exports);
 
