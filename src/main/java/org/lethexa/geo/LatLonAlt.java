@@ -34,7 +34,7 @@ public class LatLonAlt
     private final double lat;
     private final double lon;
     private final double alt;
-    
+
     private final double earthRadius;
 
     private final double radLat;
@@ -44,15 +44,15 @@ public class LatLonAlt
     private final double cosLat;
     private final double sinLon;
     private final double cosLon;
-    
+
     public static LatLonAlt valueOf( String value )
     {
         String[] parts = value.split(";");
         if( parts.length != 3 )
             throw new IllegalArgumentException("Invalid string: " + value);
         return fromLLA(
-                Double.parseDouble(parts[0]), 
-                Double.parseDouble(parts[1]), 
+                Double.parseDouble(parts[0]),
+                Double.parseDouble(parts[1]),
                 Double.parseDouble(parts[2])
         );
     }
@@ -73,12 +73,12 @@ public class LatLonAlt
         this.lon = lon;
         this.alt = alt;
         this.ellipsoid = ellipsoid;
-        
+
         this.radLat = Math.toRadians(this.lat);
         this.radLon = Math.toRadians(this.lon);
-        
+
         this.earthRadius = this.ellipsoid.getRadiusAt(radLat);
-        
+
         this.sinLat = Math.sin(radLat);
         this.cosLat = Math.cos(radLat);
         this.sinLon = Math.sin(radLon);
@@ -128,24 +128,23 @@ public class LatLonAlt
     }
 
     /*
-    public Matrix3x3 toLocalTransform()
-    {
-        return Matrix3x3.fromElements(
-                -sinLon, cosLon, 0.0,
-                -sinLat * cosLon, -sinLat * sinLon, cosLat,
-                cosLat * cosLon, cosLat * sinLon, sinLat
-        );
-    }
+     public Matrix3x3 toLocalTransform()
+     {
+     return Matrix3x3.fromElements(
+     -sinLon, cosLon, 0.0,
+     -sinLat * cosLon, -sinLat * sinLon, cosLat,
+     cosLat * cosLon, cosLat * sinLon, sinLat
+     );
+     }
 
-    public Matrix3x3 toGlobalTransform()
+     public Matrix3x3 toGlobalTransform()
+     {
+     return toLocalTransform().transpose();
+     }
+     */
+    public double getDistanceTo( LatLonAlt to, Ellipsoid ellipsoid )
     {
-        return toLocalTransform().transpose();
-    }
-    */
-    
-    public double getDistanceTo(LatLonAlt to, Ellipsoid ellipsoid)
-    {
-        if (to == null)
+        if( to == null )
             throw new NullPointerException("'to' should not be null");
 
         double latDiff = Math.abs(radLat - to.radLat);
@@ -156,19 +155,40 @@ public class LatLonAlt
 
         double r = earthRadius;
         double a = sin2Lat * sin2Lat + cosLat * to.cosLat * sin2Lon * sin2Lon;
-        double c = 2.0 * Math.asin(Math.min(1.0, Math.sqrt(a)));
+        double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         return r * c;
     }
 
-    public double getAzimutTo(LatLonAlt to)
+    public double getAzimutTo( LatLonAlt to )
     {
-        if (to == null)
+        if( to == null )
             throw new NullPointerException("'to' should not be null");
 
         double lonDiff = to.radLon - radLon;
         double sinLonDiff = Math.sin(lonDiff);
         double cosLonDiff = Math.cos(lonDiff);
         return Math.atan2(to.cosLat * sinLonDiff, (cosLat * to.sinLat - sinLat * to.cosLat * cosLonDiff));
+    }
+
+    public LatLonAlt extrapolateTo( double distance, double azimut )
+    {
+        if( distance < 0.0 )
+            throw new IllegalArgumentException("distance should be >= 0.0, but is " + distance);
+
+        double arcOnSurface = distance / earthRadius;
+        double cosAzimut = Math.cos(azimut);
+        double sinAzimut = Math.sin(azimut);
+        double sinArcOnSurface = Math.sin(arcOnSurface);
+        double cosArcOnSurface = Math.cos(arcOnSurface);
+
+        double newLat = Math.toDegrees(Math.asin(sinLat * cosArcOnSurface + cosLat * sinArcOnSurface * cosAzimut));
+        double newLon = Math.toDegrees(Math.atan2(sinArcOnSurface * sinAzimut, cosLat * cosArcOnSurface - sinLat * sinArcOnSurface * cosAzimut) + radLon);
+
+        return LatLonAlt.fromLLA(
+                newLat,
+                newLon,
+                this.alt
+        );
     }
 
     @Override
