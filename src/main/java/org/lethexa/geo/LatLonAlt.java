@@ -30,6 +30,9 @@ package org.lethexa.geo;
  */
 public class LatLonAlt
 {
+    private static final double EPSILON = 0.001;
+    private static final Ellipsoid DEFAULT_ELLIPSOID = Ellipsoid.EARTH;
+    
     private final Ellipsoid ellipsoid;
     private final double lat;
     private final double lon;
@@ -57,9 +60,50 @@ public class LatLonAlt
         );
     }
 
+    public static LatLonAlt fromVec3( Vec3 vec, Ellipsoid ellipsoid )
+    {
+        if( vec == null )
+            throw new NullPointerException("vec should not be null");
+        if( ellipsoid == null )
+            throw new NullPointerException("ellipsoid should not be null");
+
+        double x = vec.x();
+        double y = vec.y();
+        double z = vec.z();
+
+        double radTempLat = 0.0;
+        double radTempLon = Math.atan2(y, x);
+        double alt = 0.0;
+        double xy = Math.sqrt(x * x + y * y);
+        double dOldLat, dOldAlt;
+        double sinTempLat = Math.sin(radTempLat);
+        double cosTempLat = Math.cos(radTempLat);
+        do
+        {
+            dOldLat = radTempLat;
+            dOldAlt = alt;
+
+            double dV = ellipsoid.a() / Math.sqrt(1.0 - ellipsoid.e2() * sinTempLat * sinTempLat);
+            radTempLat = Math.atan((z - alt * ellipsoid.e2() * sinTempLat) / (xy * (1.0 - ellipsoid.e2())));
+
+            sinTempLat = Math.sin(radTempLat);
+            cosTempLat = Math.cos(radTempLat);
+
+            alt = xy / cosTempLat - dV;
+        }
+        while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
+
+        return fromLLAAndEllipsoid(
+                Math.toDegrees(radTempLat), 
+                Math.toDegrees(radTempLon), 
+                alt,
+                ellipsoid
+        );
+    }
+
     public static LatLonAlt fromLLA( double lat, double lon, double alt )
     {
-        return new LatLonAlt(lat, lon, alt, Ellipsoid.EARTH);
+        return new LatLonAlt(lat, lon, alt, DEFAULT_ELLIPSOID);
     }
 
     public static LatLonAlt fromLLAAndEllipsoid( double lat, double lon, double alt, Ellipsoid ellipsoid )
@@ -147,14 +191,14 @@ public class LatLonAlt
         if( to == null )
             throw new NullPointerException("'to' should not be null");
 
-        double latDiff = Math.abs(radLat - to.radLat);
-        double lonDiff = Math.abs(radLon - to.radLon);
+        double latDiff = Math.abs(to.radLat - radLat);
+        double lonDiff = Math.abs(to.radLon - radLon);
 
-        double sin2Lat = Math.sin(latDiff / 2.0);
-        double sin2Lon = Math.sin(lonDiff / 2.0);
+        double sin2LatDiff = Math.sin(latDiff / 2.0);
+        double sin2LonDiff = Math.sin(lonDiff / 2.0);
 
         double r = earthRadius;
-        double a = sin2Lat * sin2Lat + cosLat * to.cosLat * sin2Lon * sin2Lon;
+        double a = sin2LatDiff * sin2LatDiff + cosLat * to.cosLat * sin2LonDiff * sin2LonDiff;
         double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         return r * c;
     }
