@@ -118,7 +118,7 @@ describe('LatLonAlt', function () {
         });
     });
 
-    describe('toVec3', function () {
+    describe('#toVec3', function () {
         it('should return Vector when the position given', function () {
             var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
 
@@ -128,6 +128,19 @@ describe('LatLonAlt', function () {
             assert.equal(actual[0], expected[0]);
             assert.equal(actual[1], expected[1]);
             assert.equal(actual[2], expected[2]);
+        });
+    });
+
+    describe('#fromVec3', function () {
+        it('should return LatLonAlt when the position given', function () {
+            var vec = [6378137.0, 0.0, 0.0];
+
+            var actual = geo.fromVec3(vec);
+            var expected = new geo.LatLonAlt(0.0, 0.0, 0.0);
+
+            assert.equal(actual.getLatitude(), expected.getLatitude());
+            assert.equal(actual.getLongitude(), expected.getLongitude());
+            assert.equal(actual.getAltitude(), expected.getAltitude());
         });
     });
 });

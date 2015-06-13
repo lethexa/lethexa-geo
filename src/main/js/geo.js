@@ -83,12 +83,11 @@
 
 
 
+    var DEFAULT_ELLIPSOID = exports.EARTH;
+    var EPSILON = 0.001;
 
     exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
-        exports.LatLonAlt.DEFAULT_ELLIPSOID = exports.EARTH;
-        exports.LatLonAlt.EPSILON = 0.001;
-
-        this._ellipsoid = ellipsoid || exports.LatLonAlt.DEFAULT_ELLIPSOID;
+        this._ellipsoid = ellipsoid || DEFAULT_ELLIPSOID;
         this._lat = lat;
         this._lon = lon;
         this._alt = alt;
@@ -147,6 +146,43 @@
         return [x,y,z];
     };
 
+    exports.fromVec3 = function(vec, ellipsoid) {
+        var theEllipsoid = ellipsoid || DEFAULT_ELLIPSOID;
+        var x = vec[0];
+        var y = vec[1];
+        var z = vec[2];
+
+        var radTempLat = 0.0;
+        var radTempLon = Math.atan2(y, x);
+        var alt = 0.0;
+        var xy = Math.sqrt(x * x + y * y);
+        var dOldLat, dOldAlt;
+        var sinTempLat = Math.sin(radTempLat);
+        var cosTempLat = Math.cos(radTempLat);
+        var dV;
+        do
+        {
+            dOldLat = radTempLat;
+            dOldAlt = alt;
+
+            dV = theEllipsoid.a() / Math.sqrt(1.0 - theEllipsoid.e2() * sinTempLat * sinTempLat);
+            radTempLat = Math.atan((z - alt * theEllipsoid.e2() * sinTempLat) / (xy * (1.0 - theEllipsoid.e2())));
+
+            sinTempLat = Math.sin(radTempLat);
+            cosTempLat = Math.cos(radTempLat);
+
+            alt = xy / cosTempLat - dV;
+        }
+        while( Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON );
+
+        return new exports.LatLonAlt(
+                radTempLat * 180.0 / Math.PI,
+                radTempLon * 180.0 / Math.PI,
+                alt,
+                theEllipsoid
+        );
+    };
+        
 
     var toRange0_2PI = function (x)
     {
