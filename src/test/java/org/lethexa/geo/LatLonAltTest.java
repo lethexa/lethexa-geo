@@ -77,10 +77,10 @@ public class LatLonAltTest
     {
         LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
-        
+
         double actual = position1.getDistanceTo(position2);
-        double expected = 60.0 * 1852.216; 
-        
+        double expected = 60.0 * 1852.216;
+
         Assert.assertEquals(expected, actual, 1000.0); // Mittlerer Wert, deshalb nicht genau !
     }
 
@@ -89,10 +89,10 @@ public class LatLonAltTest
     {
         LatLonAlt position1 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
-        
+
         double actual = position1.getAzimutTo(position2);
-        double expected = 0.0; 
-        
+        double expected = 0.0;
+
         Assert.assertEquals(expected, actual, EPSILON);
     }
 
@@ -101,10 +101,10 @@ public class LatLonAltTest
     {
         LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 9.125, 0.0);
-        
+
         double actual = position1.getAzimutTo(position2);
-        double expected = Math.toRadians(90.0); 
-        
+        double expected = Math.toRadians(90.0);
+
         Assert.assertEquals(expected, actual, 0.1);
     }
 
@@ -113,11 +113,11 @@ public class LatLonAltTest
     {
         LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
-        
+
         double actual = position1.getAzimutTo(position2);
-        double expected = Math.toRadians(180.0); 
-        
-        Assert.assertEquals(expected, actual, EPSILON); 
+        double expected = Math.toRadians(180.0);
+
+        Assert.assertEquals(expected, actual, EPSILON);
     }
 
     @Test
@@ -125,21 +125,21 @@ public class LatLonAltTest
     {
         LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 7.125, 0.0);
-        
+
         double actual = position1.getAzimutTo(position2);
-        double expected = Math.toRadians(270.0); 
-        
+        double expected = Math.toRadians(270.0);
+
         Assert.assertEquals(expected, actual, 0.1); // Mittlerer Wert, deshalb nicht genau !
     }
 
     @Test
-    public void testExtrapolateTo()
+    public void testToVec3()
     {
-    }
+        LatLonAlt instance = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
 
-    @Test
-    public void testToString()
-    {
-    }
+        Vec3 actual = instance.toVec3();
+        Vec3 expected = Vec3.fromElements(6378137.0, 0.0, 0.0);
 
+        Assert.assertEquals(expected, actual);
+    }
 }
