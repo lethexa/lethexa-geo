@@ -22,11 +22,39 @@ describe('Ellipsoid', function () {
         });
     });
 
-    describe('#a()', function () {
+    describe('#b()', function () {
         it('should return semiminor earthradius when earth selected', function () {
             var earthEllipsoid = geo.EARTH;
 
             assert.equal(earthEllipsoid.b(), 6356752.3142);
+        });
+    });
+});
+
+
+
+describe('LatLonAlt', function () {
+    describe('#getLatitude()', function () {
+        it('should return latitude earthradius when getLatitude called', function () {
+            var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
+
+            assert.equal(geoPos.getLatitude(), 53.5);
+        });
+    });
+
+    describe('#getLongitude()', function () {
+        it('should return longitude earthradius when getLongitude called', function () {
+            var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
+
+            assert.equal(geoPos.getLongitude(), 8.125);
+        });
+    });
+    
+    describe('#getAltitude()', function () {
+        it('should return altitude earthradius when getAltitude called', function () {
+            var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
+
+            assert.equal(geoPos.getAltitude(), 1000.0);
         });
     });
 });

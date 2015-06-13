@@ -26,49 +26,49 @@
 
 /* global exports */
 
-(function(exports) {
+(function (exports) {
     'use strict';
 
-    exports.Ellipsoid = function(a, b) {
+    exports.Ellipsoid = function (a, b) {
         var a2 = a * a;
         var b2 = b * b;
         var e2 = (a2 - b2) / a2;
 
-        this.getRadiusAt = function( radLat ) {
+        this.getRadiusAt = function (radLat) {
             var sinLat = Math.sin(radLat);
             var sinLatSquared = sinLat * sinLat;
             return a * (1.0 - e2) / Math.pow((1.0 - e2 * sinLatSquared), 1.5);
         };
 
-        this.a = function() {
+        this.a = function () {
             return a;
         };
 
-        this.b = function() {
+        this.b = function () {
             return b;
         };
 
-        this.a2 = function() {
+        this.a2 = function () {
             return a2;
         };
 
-        this.b2 = function() {
+        this.b2 = function () {
             return b2;
         };
 
-        this.e2 = function() {
+        this.e2 = function () {
             return e2;
         };
 
-        this.circumferenceA = function() {
+        this.circumferenceA = function () {
             return 2.0 * Math.PI * this.a;
         };
 
-        this.circumferenceB = function() {
+        this.circumferenceB = function () {
             return 2.0 * Math.PI * this.b;
         };
     };
-    
+
     exports.EARTH = new exports.Ellipsoid(6378137.0, 6356752.3142);
     exports.SUN = new exports.Ellipsoid(1392500000.0, 1392500000.0);
     exports.MERCURY = new exports.Ellipsoid(2439640.0, 2439640.0);
@@ -80,10 +80,40 @@
     exports.URANUS = new exports.Ellipsoid(25557250.0, 25557250.0);
     exports.NEPTUNE = new exports.Ellipsoid(24766360.0, 24766360.0);
     exports.PLUTO = new exports.Ellipsoid(1148070.0, 1148070.0);
-    
-    
-    
-    
-    
-})(typeof exports === 'undefined'? this.geo={}: exports);
+
+
+
+
+    exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
+        exports.LatLonAlt.DEFAULT_ELLIPSOID = exports.EARTH;
+
+        var EPSILON = 0.001;
+
+        ellipsoid = ellipsoid || exports.LatLonAlt.DEFAULT_ELLIPSOID;
+        var radLat = lat * Math.PI / 180.0;
+        var radLon = lon * Math.PI / 180.0;
+
+        var earthRadius = ellipsoid.getRadiusAt(radLat);
+
+        var sinLat = Math.sin(radLat);
+        var cosLat = Math.cos(radLat);
+        var sinLon = Math.sin(radLon);
+        var cosLon = Math.cos(radLon);
+
+        this.getLatitude = function () {
+            return lat;
+        };
+
+        this.getLongitude = function () {
+            return lon;
+        };
+
+        this.getAltitude = function () {
+            return alt;
+        };
+
+    };
+
+
+})(typeof exports === 'undefined' ? this.geo = {} : exports);
 
