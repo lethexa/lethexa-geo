@@ -21,4 +21,12 @@ describe('Ellipsoid', function () {
             assert.equal(earthEllipsoid.a(), 6378137.0);
         });
     });
+
+    describe('#a()', function () {
+        it('should return semiminor earthradius when earth selected', function () {
+            var earthEllipsoid = geo.EARTH;
+
+            assert.equal(earthEllipsoid.b(), 6356752.3142);
+        });
+    });
 });
