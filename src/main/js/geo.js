@@ -137,6 +137,16 @@
         return toRange0_2PI(azimut);
     };
 
+    exports.LatLonAlt.prototype.toVec3 = function() {
+        var V = this._ellipsoid.a() / Math.sqrt(1.0 - this._ellipsoid.e2() * this._sinLat * this._sinLat);
+
+        var x = (V + this._alt) * this._cosLat * this._cosLon;
+        var y = (V + this._alt) * this._cosLat * this._sinLon;
+        var z = ((1.0 - this._ellipsoid.e2()) * V + this._alt) * this._sinLat;
+
+        return [x,y,z];
+    };
+
 
     var toRange0_2PI = function (x)
     {

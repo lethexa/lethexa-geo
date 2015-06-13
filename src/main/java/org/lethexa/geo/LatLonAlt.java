@@ -246,6 +246,17 @@ public class LatLonAlt
         return x;
     }
 
+    public Vec3 toVec3()
+    {
+        double V = ellipsoid.a() / Math.sqrt(1.0 - ellipsoid.e2() * sinLat * sinLat);
+
+        double x = (V + alt) * cosLat * cosLon;
+        double y = (V + alt) * cosLat * sinLon;
+        double z = ((1.0 - ellipsoid.e2()) * V + alt) * sinLat;
+
+        return Vec3.fromElements(x, y, z);
+    }
+
     @Override
     public String toString()
     {

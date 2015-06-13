@@ -49,7 +49,7 @@ describe('LatLonAlt', function () {
             assert.equal(geoPos.getLongitude(), 8.125);
         });
     });
-    
+
     describe('#getAltitude()', function () {
         it('should return altitude when getAltitude called', function () {
             var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
@@ -57,7 +57,7 @@ describe('LatLonAlt', function () {
             assert.equal(geoPos.getAltitude(), 1000.0);
         });
     });
-    
+
     describe('#getDistanceTo()', function () {
         it('should return distance when getDistanceTo called', function () {
             var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
@@ -76,7 +76,7 @@ describe('LatLonAlt', function () {
             var position2 = new geo.LatLonAlt(54.0, 8.125, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
-            var expected = 0.0; 
+            var expected = 0.0;
 
             assert.equal(Math.round(actual), expected);
         });
@@ -88,7 +88,7 @@ describe('LatLonAlt', function () {
             var position2 = new geo.LatLonAlt(54.0, 9.125, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
-            var expected = 90.0; 
+            var expected = 90.0;
 
             assert.equal(Math.round(actual), expected);
         });
@@ -100,7 +100,7 @@ describe('LatLonAlt', function () {
             var position2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
-            var expected = 180.0; 
+            var expected = 180.0;
 
             assert.equal(Math.round(actual), expected);
         });
@@ -112,9 +112,22 @@ describe('LatLonAlt', function () {
             var position2 = new geo.LatLonAlt(54.0, 7.125, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
-            var expected = 270.0; 
+            var expected = 270.0;
 
             assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('toVec3', function () {
+        it('should return Vector when the position given', function () {
+            var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
+
+            var actual = position.toVec3();
+            var expected = [6378137.0, 0.0, 0.0];
+
+            assert.equal(actual[0], expected[0]);
+            assert.equal(actual[1], expected[1]);
+            assert.equal(actual[2], expected[2]);
         });
     });
 });
