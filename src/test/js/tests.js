@@ -35,7 +35,7 @@ describe('Ellipsoid', function () {
 
 describe('LatLonAlt', function () {
     describe('#getLatitude()', function () {
-        it('should return latitude earthradius when getLatitude called', function () {
+        it('should return latitude when getLatitude called', function () {
             var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
 
             assert.equal(geoPos.getLatitude(), 53.5);
@@ -43,7 +43,7 @@ describe('LatLonAlt', function () {
     });
 
     describe('#getLongitude()', function () {
-        it('should return longitude earthradius when getLongitude called', function () {
+        it('should return longitude when getLongitude called', function () {
             var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
 
             assert.equal(geoPos.getLongitude(), 8.125);
@@ -51,7 +51,7 @@ describe('LatLonAlt', function () {
     });
     
     describe('#getAltitude()', function () {
-        it('should return altitude earthradius when getAltitude called', function () {
+        it('should return altitude when getAltitude called', function () {
             var geoPos = new geo.LatLonAlt(53.5, 8.125, 1000.0);
 
             assert.equal(geoPos.getAltitude(), 1000.0);
@@ -59,13 +59,62 @@ describe('LatLonAlt', function () {
     });
     
     describe('#getDistanceTo()', function () {
-        it('should return distance earthradius when getDistanceTo called', function () {
-            var geoPos1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
-            var geoPos2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
+        it('should return distance when getDistanceTo called', function () {
+            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var position2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
 
-            var distance = geoPos1.getDistanceTo(geoPos2);
+            var actual = position1.getDistanceTo(position2);
+            var expected = 111305.0;
 
-            assert.equal(Math.floor(distance), 111305.0);
+            assert.equal(Math.floor(actual), expected);
+        });
+    });
+
+    describe('#getAzimutTo()', function () {
+        it('should return azimut=0 when two points given 0°', function () {
+            var position1 = new geo.LatLonAlt(53.0, 8.125, 0.0);
+            var position2 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+
+            var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
+            var expected = 0.0; 
+
+            assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('#getAzimutTo()', function () {
+        it('should return azimut=90 when two points given 90°', function () {
+            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var position2 = new geo.LatLonAlt(54.0, 9.125, 0.0);
+
+            var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
+            var expected = 90.0; 
+
+            assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('#getAzimutTo()', function () {
+        it('should return azimut=180 when two points given 180°', function () {
+            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var position2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
+
+            var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
+            var expected = 180.0; 
+
+            assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('#getAzimutTo()', function () {
+        it('should return azimut=270 when two points given 270°', function () {
+            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var position2 = new geo.LatLonAlt(54.0, 7.125, 0.0);
+
+            var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
+            var expected = 270.0; 
+
+            assert.equal(Math.round(actual), expected);
         });
     });
 });

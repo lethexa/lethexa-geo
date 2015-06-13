@@ -92,7 +92,7 @@
         this._lat = lat;
         this._lon = lon;
         this._alt = alt;
-        
+
         this._radLat = lat * Math.PI / 180.0;
         this._radLon = lon * Math.PI / 180.0;
 
@@ -116,7 +116,7 @@
         return this._alt;
     };
 
-    exports.LatLonAlt.prototype.getDistanceTo = function(to) {
+    exports.LatLonAlt.prototype.getDistanceTo = function (to) {
         var latDiff = Math.abs(to._radLat - this._radLat);
         var lonDiff = Math.abs(to._radLon - this._radLon);
 
@@ -128,6 +128,25 @@
         return this._earthRadius * c;
     };
 
+
+    exports.LatLonAlt.prototype.getAzimutTo = function (to) {
+        var lonDiff = to._radLon - this._radLon;
+        var sinLonDiff = Math.sin(lonDiff);
+        var cosLonDiff = Math.cos(lonDiff);
+        var azimut = Math.atan2(to._cosLat * sinLonDiff, (this._cosLat * to._sinLat - this._sinLat * to._cosLat * cosLonDiff));
+        return toRange0_2PI(azimut);
+    };
+
+
+    var toRange0_2PI = function (x)
+    {
+        var twoPI = 2.0 * Math.PI;
+        while (x >= twoPI)
+            x -= twoPI;
+        while (x < 0.0)
+            x += twoPI;
+        return x;
+    };
 
 })(typeof exports === 'undefined' ? this.geo = {} : exports);
 
