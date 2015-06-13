@@ -117,4 +117,14 @@ public class Ellipsoid implements Serializable
     {
         return e2;
     }
+
+    public final double circumferenceA()
+    {
+        return 2 * Math.PI * this.a;
+    }
+
+    public final double circumferenceB()
+    {
+        return 2 * Math.PI * this.b;
+    }
 }

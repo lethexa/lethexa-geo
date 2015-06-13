@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Tim Leerhoff <tleerhof@web.de>
+ * Copyright (c) 2015, Tim Leerhoff <tleerhof@web.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ public class LatLonAlt
 {
     private static final double EPSILON = 0.001;
     private static final Ellipsoid DEFAULT_ELLIPSOID = Ellipsoid.EARTH;
-    
+
     private final Ellipsoid ellipsoid;
     private final double lat;
     private final double lon;
@@ -91,11 +91,11 @@ public class LatLonAlt
 
             alt = xy / cosTempLat - dV;
         }
-        while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
+        while( Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON );
 
         return fromLLAAndEllipsoid(
-                Math.toDegrees(radTempLat), 
-                Math.toDegrees(radTempLon), 
+                Math.toDegrees(radTempLat),
+                Math.toDegrees(radTempLon),
                 alt,
                 ellipsoid
         );
@@ -186,6 +186,11 @@ public class LatLonAlt
      return toLocalTransform().transpose();
      }
      */
+    public double getDistanceTo( LatLonAlt to )
+    {
+        return getDistanceTo(to, DEFAULT_ELLIPSOID);
+    }
+
     public double getDistanceTo( LatLonAlt to, Ellipsoid ellipsoid )
     {
         if( to == null )
@@ -211,7 +216,8 @@ public class LatLonAlt
         double lonDiff = to.radLon - radLon;
         double sinLonDiff = Math.sin(lonDiff);
         double cosLonDiff = Math.cos(lonDiff);
-        return Math.atan2(to.cosLat * sinLonDiff, (cosLat * to.sinLat - sinLat * to.cosLat * cosLonDiff));
+        double azimut = Math.atan2(to.cosLat * sinLonDiff, (cosLat * to.sinLat - sinLat * to.cosLat * cosLonDiff));
+        return toRange0_2PI(azimut);
     }
 
     public LatLonAlt extrapolateTo( double distance, double azimut )
@@ -233,6 +239,16 @@ public class LatLonAlt
                 newLon,
                 this.alt
         );
+    }
+
+    private double toRange0_2PI( double x )
+    {
+        double twoPI = 2.0 * Math.PI;
+        while( x >= twoPI )
+            x -= twoPI;
+        while( x < 0.0 )
+            x += twoPI;
+        return x;
     }
 
     @Override
