@@ -188,11 +188,6 @@ public class LatLonAlt
      */
     public double getDistanceTo( LatLonAlt to )
     {
-        return getDistanceTo(to, DEFAULT_ELLIPSOID);
-    }
-
-    public double getDistanceTo( LatLonAlt to, Ellipsoid ellipsoid )
-    {
         if( to == null )
             throw new NullPointerException("'to' should not be null");
 

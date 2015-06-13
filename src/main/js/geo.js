@@ -86,32 +86,46 @@
 
     exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
         exports.LatLonAlt.DEFAULT_ELLIPSOID = exports.EARTH;
+        exports.LatLonAlt.EPSILON = 0.001;
 
-        var EPSILON = 0.001;
+        this._ellipsoid = ellipsoid || exports.LatLonAlt.DEFAULT_ELLIPSOID;
+        this._lat = lat;
+        this._lon = lon;
+        this._alt = alt;
+        
+        this._radLat = lat * Math.PI / 180.0;
+        this._radLon = lon * Math.PI / 180.0;
 
-        ellipsoid = ellipsoid || exports.LatLonAlt.DEFAULT_ELLIPSOID;
-        var radLat = lat * Math.PI / 180.0;
-        var radLon = lon * Math.PI / 180.0;
+        this._earthRadius = this._ellipsoid.getRadiusAt(this._radLat);
 
-        var earthRadius = ellipsoid.getRadiusAt(radLat);
+        this._sinLat = Math.sin(this._radLat);
+        this._cosLat = Math.cos(this._radLat);
+        this._sinLon = Math.sin(this._radLon);
+        this._cosLon = Math.cos(this._radLon);
+    };
 
-        var sinLat = Math.sin(radLat);
-        var cosLat = Math.cos(radLat);
-        var sinLon = Math.sin(radLon);
-        var cosLon = Math.cos(radLon);
+    exports.LatLonAlt.prototype.getLatitude = function () {
+        return this._lat;
+    };
 
-        this.getLatitude = function () {
-            return lat;
-        };
+    exports.LatLonAlt.prototype.getLongitude = function () {
+        return this._lon;
+    };
 
-        this.getLongitude = function () {
-            return lon;
-        };
+    exports.LatLonAlt.prototype.getAltitude = function () {
+        return this._alt;
+    };
 
-        this.getAltitude = function () {
-            return alt;
-        };
+    exports.LatLonAlt.prototype.getDistanceTo = function(to) {
+        var latDiff = Math.abs(to._radLat - this._radLat);
+        var lonDiff = Math.abs(to._radLon - this._radLon);
 
+        var sin2LatDiff = Math.sin(latDiff / 2.0);
+        var sin2LonDiff = Math.sin(lonDiff / 2.0);
+
+        var a = sin2LatDiff * sin2LatDiff + this._cosLat * to._cosLat * sin2LonDiff * sin2LonDiff;
+        var c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
+        return this._earthRadius * c;
     };
 
 

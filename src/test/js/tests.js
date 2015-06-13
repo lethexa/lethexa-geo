@@ -57,4 +57,15 @@ describe('LatLonAlt', function () {
             assert.equal(geoPos.getAltitude(), 1000.0);
         });
     });
+    
+    describe('#getDistanceTo()', function () {
+        it('should return distance earthradius when getDistanceTo called', function () {
+            var geoPos1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var geoPos2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
+
+            var distance = geoPos1.getDistanceTo(geoPos2);
+
+            assert.equal(Math.floor(distance), 111305.0);
+        });
+    });
 });
