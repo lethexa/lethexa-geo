@@ -95,6 +95,13 @@
         return x;
     };
 
+    var transposeMatrix3x3 = function (m) {
+        return [
+            [m[0][0], m[1][0], m[2][0]],
+            [m[0][1], m[1][1], m[2][1]],
+            [m[0][2], m[1][2], m[2][2]]
+        ];
+    };
 
     exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
         this._ellipsoid = ellipsoid || DEFAULT_ELLIPSOID;
@@ -152,6 +159,10 @@
             [-this._sinLat * this._cosLon, -this._sinLat * this._sinLon, this._cosLat],
             [this._cosLat * this._cosLon, this._cosLat * this._sinLon, this._sinLat]
         ];
+    };
+    
+    exports.LatLonAlt.prototype.toGlobalTransform = function () {
+        return transposeMatrix3x3(this.toLocalTransform());
     };
 
     exports.LatLonAlt.prototype.toVec3 = function () {

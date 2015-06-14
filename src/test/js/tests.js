@@ -168,4 +168,29 @@ describe('LatLonAlt', function () {
             assert.equal(actual[2][2], expected[2][2]);
         });
     });
+
+    describe('#toGlobalTransform', function () {
+        it('should return a correct transformmatrix 3x3 when the position given', function () {
+            var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
+
+            var actual = position.toGlobalTransform();
+            var expected = [
+                [-0, -0, 1],
+                [1, -0, 0],
+                [0, 1, 0]
+            ];
+
+            assert.equal(actual[0][0], expected[0][0]);
+            assert.equal(actual[0][1], expected[0][1]);
+            assert.equal(actual[0][2], expected[0][2]);
+
+            assert.equal(actual[1][0], expected[1][0]);
+            assert.equal(actual[1][1], expected[1][1]);
+            assert.equal(actual[1][2], expected[1][2]);
+
+            assert.equal(actual[2][0], expected[2][0]);
+            assert.equal(actual[2][1], expected[2][1]);
+            assert.equal(actual[2][2], expected[2][2]);
+        });
+    });
 });
