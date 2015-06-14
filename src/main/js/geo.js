@@ -146,17 +146,25 @@
         return toRange0_2PI(azimut);
     };
 
-    exports.LatLonAlt.prototype.toVec3 = function() {
+    exports.LatLonAlt.prototype.toLocalTransform = function () {
+        return [
+            [-this._sinLon, this._cosLon, 0.0],
+            [-this._sinLat * this._cosLon, -this._sinLat * this._sinLon, this._cosLat],
+            [this._cosLat * this._cosLon, this._cosLat * this._sinLon, this._sinLat]
+        ];
+    };
+
+    exports.LatLonAlt.prototype.toVec3 = function () {
         var V = this._ellipsoid.a() / Math.sqrt(1.0 - this._ellipsoid.e2() * this._sinLat * this._sinLat);
 
         var x = (V + this._alt) * this._cosLat * this._cosLon;
         var y = (V + this._alt) * this._cosLat * this._sinLon;
         var z = ((1.0 - this._ellipsoid.e2()) * V + this._alt) * this._sinLat;
 
-        return [x,y,z];
+        return [x, y, z];
     };
 
-    exports.fromVec3 = function(vec, ellipsoid) {
+    exports.fromVec3 = function (vec, ellipsoid) {
         var theEllipsoid = ellipsoid || DEFAULT_ELLIPSOID;
         var x = vec[0];
         var y = vec[1];
@@ -183,16 +191,16 @@
 
             alt = xy / cosTempLat - dV;
         }
-        while( Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON );
+        while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
 
         return new exports.LatLonAlt(
                 radTempLat * 180.0 / Math.PI,
                 radTempLon * 180.0 / Math.PI,
                 alt,
                 theEllipsoid
-        );
+                );
     };
-        
+
 
 
 })(typeof exports === 'undefined' ? this.geo = {} : exports);
