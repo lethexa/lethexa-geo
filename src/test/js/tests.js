@@ -12,7 +12,6 @@ describe('Array', function () {
 });
 
 
-
 describe('Ellipsoid', function () {
     describe('#a()', function () {
         it('should return semimajor earthradius when earth selected', function () {
