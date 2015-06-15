@@ -43,7 +43,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testFromVectorArray()
+    public void testFromGeocentric()
     {
         LatLonAlt instance = LatLonAlt.fromGeocentric(new double[] {6378137.0, 0.0, 0.0}, Ellipsoid.EARTH);
 
@@ -55,7 +55,7 @@ public class LatLonAltTest
     @Test
     public void testFromLLA()
     {
-        LatLonAlt instance = LatLonAlt.fromLLA(53.5, 8.125, 1000.0);
+        LatLonAlt instance = LatLonAlt.fromLatLonAlt(53.5, 8.125, 1000.0);
 
         Assert.assertEquals(53.5, instance.getLatitude(), EPSILON);
         Assert.assertEquals(8.125, instance.getLongitude(), EPSILON);
@@ -65,7 +65,7 @@ public class LatLonAltTest
     @Test
     public void testFromLLAAndEllipsoid()
     {
-        LatLonAlt instance = LatLonAlt.fromLLAAndEllipsoid(53.5, 8.125, 1000.0, Ellipsoid.EARTH);
+        LatLonAlt instance = LatLonAlt.fromLatLonAltAndEllipsoid(53.5, 8.125, 1000.0, Ellipsoid.EARTH);
 
         Assert.assertEquals(53.5, instance.getLatitude(), EPSILON);
         Assert.assertEquals(8.125, instance.getLongitude(), EPSILON);
@@ -75,8 +75,8 @@ public class LatLonAltTest
     @Test
     public void testGetDistanceTo()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(54.0, 8.125, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(53.0, 8.125, 0.0);
 
         double actual = position1.getDistanceTo(position2);
         double expected = 60.0 * 1852.216;
@@ -87,8 +87,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_1()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(1.0, 0.0, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(1.0, 0.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = 0.0;
@@ -99,8 +99,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_2()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(0.0, 1.0, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(0.0, 1.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(90.0);
@@ -111,8 +111,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_3()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(-1.0, 0.0, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(-1.0, 0.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(180.0);
@@ -123,8 +123,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_4()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(0.0, -1.0, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(0.0, -1.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(270.0);
@@ -133,9 +133,9 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testToVectorArray()
+    public void testToGeocentric()
     {
-        LatLonAlt instance = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
+        LatLonAlt instance = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
 
         double[] actual = instance.toGeocentric();
         double[] expected = {6378137.0, 0.0, 0.0};

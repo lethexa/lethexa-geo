@@ -53,11 +53,19 @@ public class LatLonAlt {
         if (parts.length != 3) {
             throw new IllegalArgumentException("Invalid string: " + value);
         }
-        return fromLLA(
+        return fromLatLonAlt(
                 Double.parseDouble(parts[0]),
                 Double.parseDouble(parts[1]),
                 Double.parseDouble(parts[2])
         );
+    }
+
+    public static LatLonAlt fromLatLonAlt(double lat, double lon, double alt) {
+        return new LatLonAlt(lat, lon, alt, DEFAULT_ELLIPSOID);
+    }
+
+    public static LatLonAlt fromLatLonAltAndEllipsoid(double lat, double lon, double alt, Ellipsoid ellipsoid) {
+        return new LatLonAlt(lat, lon, alt, ellipsoid);
     }
 
     public static LatLonAlt fromLatLonAltArray(double[] array, Ellipsoid ellipsoid) {
@@ -102,20 +110,12 @@ public class LatLonAlt {
             alt = xy / cosTempLat - dV;
         } while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
 
-        return fromLLAAndEllipsoid(
+        return fromLatLonAltAndEllipsoid(
                 Math.toDegrees(radTempLat),
                 Math.toDegrees(radTempLon),
                 alt,
                 ellipsoid
         );
-    }
-
-    public static LatLonAlt fromLLA(double lat, double lon, double alt) {
-        return new LatLonAlt(lat, lon, alt, DEFAULT_ELLIPSOID);
-    }
-
-    public static LatLonAlt fromLLAAndEllipsoid(double lat, double lon, double alt, Ellipsoid ellipsoid) {
-        return new LatLonAlt(lat, lon, alt, ellipsoid);
     }
 
     private LatLonAlt(double lat, double lon, double alt, Ellipsoid ellipsoid) {
@@ -235,10 +235,11 @@ public class LatLonAlt {
         double newLat = Math.toDegrees(Math.asin(sinLat * cosArcOnSurface + cosLat * sinArcOnSurface * cosAzimut));
         double newLon = Math.toDegrees(Math.atan2(sinArcOnSurface * sinAzimut, cosLat * cosArcOnSurface - sinLat * sinArcOnSurface * cosAzimut) + radLon);
 
-        return LatLonAlt.fromLLA(
+        return LatLonAlt.fromLatLonAltAndEllipsoid(
                 newLat,
                 newLon,
-                this.alt
+                this.alt,
+                this.ellipsoid
         );
     }
 
