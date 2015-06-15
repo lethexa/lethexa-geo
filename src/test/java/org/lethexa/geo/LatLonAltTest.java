@@ -43,9 +43,9 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testFromVec3()
+    public void testFromVectorArray()
     {
-        LatLonAlt instance = LatLonAlt.fromVec3(Vec3.fromElements(6378137.0, 0.0, 0.0), Ellipsoid.EARTH);
+        LatLonAlt instance = LatLonAlt.fromGeocentric(new double[] {6378137.0, 0.0, 0.0}, Ellipsoid.EARTH);
 
         Assert.assertEquals(0.0, instance.getLatitude(), EPSILON);
         Assert.assertEquals(0.0, instance.getLongitude(), EPSILON);
@@ -133,13 +133,13 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testToVec3()
+    public void testToVectorArray()
     {
         LatLonAlt instance = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
 
-        Vec3 actual = instance.toVec3();
-        Vec3 expected = Vec3.fromElements(6378137.0, 0.0, 0.0);
+        double[] actual = instance.toGeocentric();
+        double[] expected = {6378137.0, 0.0, 0.0};
 
-        Assert.assertEquals(expected, actual);
+        Assert.assertArrayEquals(expected, actual, EPSILON);
     }
 }

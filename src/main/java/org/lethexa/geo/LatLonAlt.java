@@ -28,8 +28,8 @@ package org.lethexa.geo;
 /**
  * This class is immutable
  */
-public class LatLonAlt
-{
+public class LatLonAlt {
+
     private static final double EPSILON = 0.001;
     private static final Ellipsoid DEFAULT_ELLIPSOID = Ellipsoid.EARTH;
 
@@ -48,11 +48,11 @@ public class LatLonAlt
     private final double sinLon;
     private final double cosLon;
 
-    public static LatLonAlt valueOf( String value )
-    {
+    public static LatLonAlt valueOf(String value) {
         String[] parts = value.split(";");
-        if( parts.length != 3 )
+        if (parts.length != 3) {
             throw new IllegalArgumentException("Invalid string: " + value);
+        }
         return fromLLA(
                 Double.parseDouble(parts[0]),
                 Double.parseDouble(parts[1]),
@@ -60,16 +60,27 @@ public class LatLonAlt
         );
     }
 
-    public static LatLonAlt fromVec3( Vec3 vec, Ellipsoid ellipsoid )
-    {
-        if( vec == null )
-            throw new NullPointerException("vec should not be null");
-        if( ellipsoid == null )
-            throw new NullPointerException("ellipsoid should not be null");
+    public static LatLonAlt fromLatLonAltArray(double[] array, Ellipsoid ellipsoid) {
+        if (array.length < 3) {
+            throw new ArrayIndexOutOfBoundsException("Array must have minimum 3 elements");
+        }
+        return new LatLonAlt(array[0], array[1], array[2], ellipsoid);
+    }
 
-        double x = vec.x();
-        double y = vec.y();
-        double z = vec.z();
+    public static LatLonAlt fromGeocentric(double[] array, Ellipsoid ellipsoid) {
+        if (array == null) {
+            throw new NullPointerException("array should not be null");
+        }
+        if (array.length < 3) {
+            throw new NullPointerException("Array must have minimum 3 elements");
+        }
+        if (ellipsoid == null) {
+            throw new NullPointerException("ellipsoid should not be null");
+        }
+
+        double x = array[0];
+        double y = array[1];
+        double z = array[2];
 
         double radTempLat = 0.0;
         double radTempLon = Math.atan2(y, x);
@@ -78,8 +89,7 @@ public class LatLonAlt
         double dOldLat, dOldAlt;
         double sinTempLat = Math.sin(radTempLat);
         double cosTempLat = Math.cos(radTempLat);
-        do
-        {
+        do {
             dOldLat = radTempLat;
             dOldAlt = alt;
 
@@ -90,8 +100,7 @@ public class LatLonAlt
             cosTempLat = Math.cos(radTempLat);
 
             alt = xy / cosTempLat - dV;
-        }
-        while( Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON );
+        } while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
 
         return fromLLAAndEllipsoid(
                 Math.toDegrees(radTempLat),
@@ -101,18 +110,15 @@ public class LatLonAlt
         );
     }
 
-    public static LatLonAlt fromLLA( double lat, double lon, double alt )
-    {
+    public static LatLonAlt fromLLA(double lat, double lon, double alt) {
         return new LatLonAlt(lat, lon, alt, DEFAULT_ELLIPSOID);
     }
 
-    public static LatLonAlt fromLLAAndEllipsoid( double lat, double lon, double alt, Ellipsoid ellipsoid )
-    {
+    public static LatLonAlt fromLLAAndEllipsoid(double lat, double lon, double alt, Ellipsoid ellipsoid) {
         return new LatLonAlt(lat, lon, alt, ellipsoid);
     }
 
-    private LatLonAlt( double lat, double lon, double alt, Ellipsoid ellipsoid )
-    {
+    private LatLonAlt(double lat, double lon, double alt, Ellipsoid ellipsoid) {
         this.lat = lat;
         this.lon = lon;
         this.alt = alt;
@@ -130,8 +136,7 @@ public class LatLonAlt
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 5;
         hash = 17 * hash + (int) (Double.doubleToLongBits(this.lat) ^ (Double.doubleToLongBits(this.lat) >>> 32));
         hash = 17 * hash + (int) (Double.doubleToLongBits(this.lon) ^ (Double.doubleToLongBits(this.lon) >>> 32));
@@ -140,34 +145,35 @@ public class LatLonAlt
     }
 
     @Override
-    public boolean equals( Object obj )
-    {
-        if( obj == null )
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
-        if( getClass() != obj.getClass() )
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         final LatLonAlt other = (LatLonAlt) obj;
-        if( Double.doubleToLongBits(this.lat) != Double.doubleToLongBits(other.lat) )
+        if (Double.doubleToLongBits(this.lat) != Double.doubleToLongBits(other.lat)) {
             return false;
-        if( Double.doubleToLongBits(this.lon) != Double.doubleToLongBits(other.lon) )
+        }
+        if (Double.doubleToLongBits(this.lon) != Double.doubleToLongBits(other.lon)) {
             return false;
-        if( Double.doubleToLongBits(this.alt) != Double.doubleToLongBits(other.alt) )
+        }
+        if (Double.doubleToLongBits(this.alt) != Double.doubleToLongBits(other.alt)) {
             return false;
+        }
         return true;
     }
 
-    public double getLatitude()
-    {
+    public double getLatitude() {
         return lat;
     }
 
-    public double getLongitude()
-    {
+    public double getLongitude() {
         return lon;
     }
 
-    public double getAltitude()
-    {
+    public double getAltitude() {
         return alt;
     }
 
@@ -186,10 +192,10 @@ public class LatLonAlt
      return toLocalTransform().transpose();
      }
      */
-    public double getDistanceTo( LatLonAlt to )
-    {
-        if( to == null )
+    public double getDistanceTo(LatLonAlt to) {
+        if (to == null) {
             throw new NullPointerException("'to' should not be null");
+        }
 
         double latDiff = Math.abs(to.radLat - radLat);
         double lonDiff = Math.abs(to.radLon - radLon);
@@ -203,10 +209,10 @@ public class LatLonAlt
         return r * c;
     }
 
-    public double getAzimutTo( LatLonAlt to )
-    {
-        if( to == null )
+    public double getAzimutTo(LatLonAlt to) {
+        if (to == null) {
             throw new NullPointerException("'to' should not be null");
+        }
 
         double lonDiff = to.radLon - radLon;
         double sinLonDiff = Math.sin(lonDiff);
@@ -215,10 +221,10 @@ public class LatLonAlt
         return toRange0_2PI(azimut);
     }
 
-    public LatLonAlt extrapolateTo( double distance, double azimut )
-    {
-        if( distance < 0.0 )
+    public LatLonAlt extrapolateTo(double distance, double azimut) {
+        if (distance < 0.0) {
             throw new IllegalArgumentException("distance should be >= 0.0, but is " + distance);
+        }
 
         double arcOnSurface = distance / earthRadius;
         double cosAzimut = Math.cos(azimut);
@@ -236,17 +242,23 @@ public class LatLonAlt
         );
     }
 
-    private double toRange0_2PI( double x )
-    {
+    private double toRange0_2PI(double x) {
         double twoPI = 2.0 * Math.PI;
-        while( x >= twoPI )
+        while (x >= twoPI) {
             x -= twoPI;
-        while( x < 0.0 )
+        }
+        while (x < 0.0) {
             x += twoPI;
+        }
         return x;
     }
 
-    public Vec3 toVec3()
+    public double[] toLatLonAltArray() 
+    {
+        return new double[] {lat, lon, alt};
+    }
+
+    public double[] toGeocentric() 
     {
         double V = ellipsoid.a() / Math.sqrt(1.0 - ellipsoid.e2() * sinLat * sinLat);
 
@@ -254,12 +266,11 @@ public class LatLonAlt
         double y = (V + alt) * cosLat * sinLon;
         double z = ((1.0 - ellipsoid.e2()) * V + alt) * sinLat;
 
-        return Vec3.fromElements(x, y, z);
+        return new double[] {x, y, z};
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "" + lat + ";" + lon + ";" + alt;
     }
 }
