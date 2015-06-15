@@ -28,13 +28,12 @@ package org.lethexa.geo;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LatLonAltTest
-{
+public class LatLonAltTest {
+
     private final double EPSILON = 0.000001;
 
     @Test
-    public void testValueOf()
-    {
+    public void testValueOf() {
         LatLonAlt instance = LatLonAlt.valueOf("53.5;8.125;1000.0");
 
         Assert.assertEquals(53.5, instance.getLatitude(), EPSILON);
@@ -43,9 +42,8 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testFromGeocentric()
-    {
-        LatLonAlt instance = LatLonAlt.fromGeocentric(new double[] {6378137.0, 0.0, 0.0}, Ellipsoid.EARTH);
+    public void testFromGeocentric() {
+        LatLonAlt instance = LatLonAlt.fromGeocentric(new double[]{6378137.0, 0.0, 0.0}, Ellipsoid.EARTH);
 
         Assert.assertEquals(0.0, instance.getLatitude(), EPSILON);
         Assert.assertEquals(0.0, instance.getLongitude(), EPSILON);
@@ -53,8 +51,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testFromLLA()
-    {
+    public void testFromLLA() {
         LatLonAlt instance = LatLonAlt.fromLatLonAlt(53.5, 8.125, 1000.0);
 
         Assert.assertEquals(53.5, instance.getLatitude(), EPSILON);
@@ -63,8 +60,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testFromLLAAndEllipsoid()
-    {
+    public void testFromLLAAndEllipsoid() {
         LatLonAlt instance = LatLonAlt.fromLatLonAltAndEllipsoid(53.5, 8.125, 1000.0, Ellipsoid.EARTH);
 
         Assert.assertEquals(53.5, instance.getLatitude(), EPSILON);
@@ -73,8 +69,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testGetDistanceTo()
-    {
+    public void testGetDistanceTo() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(53.0, 8.125, 0.0);
 
@@ -85,8 +80,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testGetAzimutTo_1()
-    {
+    public void testGetAzimutTo_1() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(1.0, 0.0, 0.0);
 
@@ -97,8 +91,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testGetAzimutTo_2()
-    {
+    public void testGetAzimutTo_2() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(0.0, 1.0, 0.0);
 
@@ -109,8 +102,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testGetAzimutTo_3()
-    {
+    public void testGetAzimutTo_3() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(-1.0, 0.0, 0.0);
 
@@ -121,8 +113,7 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testGetAzimutTo_4()
-    {
+    public void testGetAzimutTo_4() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(0.0, -1.0, 0.0);
 
@@ -133,13 +124,44 @@ public class LatLonAltTest
     }
 
     @Test
-    public void testToGeocentric()
-    {
+    public void testToGeocentric() {
         LatLonAlt instance = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
 
         double[] actual = instance.toGeocentric();
         double[] expected = {6378137.0, 0.0, 0.0};
 
         Assert.assertArrayEquals(expected, actual, EPSILON);
+    }
+
+    @Test
+    public void testToLocalTransform() {
+        LatLonAlt position = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+
+        double[][] actual = position.toLocalTransform();
+        double[][] expected = new double[][]{
+            {-0, 1, 0},
+            {-0, -0, 1},
+            {1, 0, 0}
+        };
+
+        Assert.assertArrayEquals(expected[0], actual[0], EPSILON);
+        Assert.assertArrayEquals(expected[1], actual[1], EPSILON);
+        Assert.assertArrayEquals(expected[2], actual[2], EPSILON);
+    }
+
+    @Test
+    public void testToGlobalTransform() {
+        LatLonAlt position = LatLonAlt.fromLatLonAlt(0.0, 0.0, 0.0);
+
+        double[][] actual = position.toGlobalTransform();
+        double[][] expected = new double[][]{
+            {-0, -0, 1},
+            {1, -0, 0},
+            {0, 1, 0}
+        };
+
+        Assert.assertArrayEquals(expected[0], actual[0], EPSILON);
+        Assert.assertArrayEquals(expected[1], actual[1], EPSILON);
+        Assert.assertArrayEquals(expected[2], actual[2], EPSILON);
     }
 }

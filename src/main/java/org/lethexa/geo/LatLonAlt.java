@@ -177,21 +177,24 @@ public class LatLonAlt {
         return alt;
     }
 
-    /*
-     public Matrix3x3 toLocalTransform()
-     {
-     return Matrix3x3.fromElements(
-     -sinLon, cosLon, 0.0,
-     -sinLat * cosLon, -sinLat * sinLon, cosLat,
-     cosLat * cosLon, cosLat * sinLon, sinLat
-     );
-     }
+    public double[][] toLocalTransform() {
+        double[][] m = new double[][] {
+            {-sinLon, cosLon, 0.0},
+            {-sinLat * cosLon, -sinLat * sinLon, cosLat},
+            {cosLat * cosLon, cosLat * sinLon, sinLat}
+        };
+        return m;
+    }
 
-     public Matrix3x3 toGlobalTransform()
-     {
-     return toLocalTransform().transpose();
-     }
-     */
+    public double[][] toGlobalTransform() {
+        double[][] m = new double[][]{
+            {-sinLon, -sinLat * cosLon, cosLat * cosLon},
+            {cosLon, -sinLat * sinLon, cosLat * sinLon},
+            {0.0, cosLat, sinLat}
+        };
+        return m;
+    }
+
     public double getDistanceTo(LatLonAlt to) {
         if (to == null) {
             throw new NullPointerException("'to' should not be null");
@@ -254,20 +257,18 @@ public class LatLonAlt {
         return x;
     }
 
-    public double[] toLatLonAltArray() 
-    {
-        return new double[] {lat, lon, alt};
+    public double[] toLatLonAltArray() {
+        return new double[]{lat, lon, alt};
     }
 
-    public double[] toGeocentric() 
-    {
+    public double[] toGeocentric() {
         double V = ellipsoid.a() / Math.sqrt(1.0 - ellipsoid.e2() * sinLat * sinLat);
 
         double x = (V + alt) * cosLat * cosLon;
         double y = (V + alt) * cosLat * sinLon;
         double z = ((1.0 - ellipsoid.e2()) * V + alt) * sinLat;
 
-        return new double[] {x, y, z};
+        return new double[]{x, y, z};
     }
 
     @Override
