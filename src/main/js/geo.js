@@ -85,8 +85,7 @@
 
     var DEFAULT_ELLIPSOID = exports.EARTH;
     var EPSILON = 0.001;
-    var toRange0_2PI = function (x)
-    {
+    var toRange0_2PI = function (x) {
         var twoPI = 2.0 * Math.PI;
         while (x >= twoPI)
             x -= twoPI;

@@ -72,8 +72,8 @@ describe('LatLonAlt', function () {
 
     describe('#getAzimutTo()', function () {
         it('should return azimut=0 when two points given 0°', function () {
-            var position1 = new geo.LatLonAlt(53.0, 8.125, 0.0);
-            var position2 = new geo.LatLonAlt(54.0, 8.125, 0.0);
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(0.0, 0.0, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
             var expected = 0.0;
@@ -84,8 +84,8 @@ describe('LatLonAlt', function () {
 
     describe('#getAzimutTo()', function () {
         it('should return azimut=90 when two points given 90°', function () {
-            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
-            var position2 = new geo.LatLonAlt(54.0, 9.125, 0.0);
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(0.0, 1.0, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
             var expected = 90.0;
@@ -96,8 +96,8 @@ describe('LatLonAlt', function () {
 
     describe('#getAzimutTo()', function () {
         it('should return azimut=180 when two points given 180°', function () {
-            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
-            var position2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(-1.0, 0.0, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
             var expected = 180.0;
@@ -108,8 +108,8 @@ describe('LatLonAlt', function () {
 
     describe('#getAzimutTo()', function () {
         it('should return azimut=270 when two points given 270°', function () {
-            var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
-            var position2 = new geo.LatLonAlt(54.0, 7.125, 0.0);
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(0.0, -1.0, 0.0);
 
             var actual = position1.getAzimutTo(position2) * 180.0 / Math.PI;
             var expected = 270.0;

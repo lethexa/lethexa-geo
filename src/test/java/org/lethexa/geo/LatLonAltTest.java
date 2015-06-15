@@ -87,8 +87,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_1()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLLA(1.0, 0.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = 0.0;
@@ -99,8 +99,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_2()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 9.125, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLLA(0.0, 1.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(90.0);
@@ -111,8 +111,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_3()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(53.0, 8.125, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLLA(-1.0, 0.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(180.0);
@@ -123,8 +123,8 @@ public class LatLonAltTest
     @Test
     public void testGetAzimutTo_4()
     {
-        LatLonAlt position1 = LatLonAlt.fromLLA(54.0, 8.125, 0.0);
-        LatLonAlt position2 = LatLonAlt.fromLLA(54.0, 7.125, 0.0);
+        LatLonAlt position1 = LatLonAlt.fromLLA(0.0, 0.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLLA(0.0, -1.0, 0.0);
 
         double actual = position1.getAzimutTo(position2);
         double expected = Math.toRadians(270.0);
