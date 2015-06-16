@@ -16,8 +16,6 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "filereader": "~0.10.3",
-    "line-reader": "~0.2.4"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
