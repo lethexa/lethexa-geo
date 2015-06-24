@@ -131,6 +131,17 @@
         return this._alt;
     };
 
+    exports.LatLonAlt.prototype.extrapolate = function (x, y, z) {
+        var angleLat = y / (this._ellipsoid.a());
+        var angleLon = x / (this._cosLat * this._ellipsoid.b());
+        return new exports.LatLonAlt(
+            this.getLatitude() + angleLat * 180.0 / Math.PI, 
+            this.getLongitude() + angleLon * 180.0 / Math.PI,
+            this.getAltitude() + z,
+            this._ellipsoid
+        );
+    };
+
     exports.LatLonAlt.prototype.getDistanceTo = function (to) {
         var latDiff = Math.abs(to._radLat - this._radLat);
         var lonDiff = Math.abs(to._radLon - this._radLon);
