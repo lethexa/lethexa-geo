@@ -205,4 +205,17 @@ describe('LatLonAlt', function () {
             assert.equal(actual.getAltitude(), expected.getAltitude());
         });
     });
+
+    describe('#extrapolate', function () {
+        it('should return an extrapolated position', function () {
+            var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
+
+            var actual = position.extrapolate(111000.0, 111000.0, 10.0);
+            var expected = new geo.LatLonAlt(1.0, 1.0, 10.0);
+
+            assert.equal(Math.round(actual.getLatitude()), expected.getLatitude());
+            assert.equal(Math.round(actual.getLongitude()), expected.getLongitude());
+            assert.equal(actual.getAltitude(), expected.getAltitude());
+        });
+    });
 });
