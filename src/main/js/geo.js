@@ -131,7 +131,7 @@
         return this._alt;
     };
 
-    exports.LatLonAlt.prototype.extrapolate = function (x, y, z) {
+    exports.LatLonAlt.prototype.extrapolateVector = function (x, y, z) {
         var angleLat = y / (this._ellipsoid.a());
         var angleLon = x / (this._cosLat * this._ellipsoid.b());
         return new exports.LatLonAlt(
@@ -139,6 +139,28 @@
             this.getLongitude() + angleLon * 180.0 / Math.PI,
             this.getAltitude() + z,
             this._ellipsoid
+        );
+    };
+
+    exports.LatLonAlt.prototype.extrapolatePolar = function(distance, azimut) {
+        if (distance < 0.0) {
+            throw new Error("distance should be >= 0.0, but is " + distance);
+        }
+
+        var arcOnSurface = distance / this._earthRadius;
+        var cosAzimut = Math.cos(azimut);
+        var sinAzimut = Math.sin(azimut);
+        var sinArcOnSurface = Math.sin(arcOnSurface);
+        var cosArcOnSurface = Math.cos(arcOnSurface);
+
+        var newLat = Math.asin(this._sinLat * cosArcOnSurface + this._cosLat * sinArcOnSurface * cosAzimut);
+        var newLon = Math.atan2(sinArcOnSurface * sinAzimut, this._cosLat * cosArcOnSurface - this._sinLat * sinArcOnSurface * cosAzimut) + this._radLon;
+
+        return new exports.LatLonAlt(
+                newLat * 180.0 / Math.PI,
+                newLon * 180.0 / Math.PI,
+                this._alt,
+                this._ellipsoid
         );
     };
 

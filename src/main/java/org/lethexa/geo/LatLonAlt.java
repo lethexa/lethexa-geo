@@ -224,7 +224,18 @@ public class LatLonAlt {
         return toRange0_2PI(azimut);
     }
 
-    public LatLonAlt extrapolateTo(double distance, double azimut) {
+    public LatLonAlt extrapolateVector( double x, double y, double z ) {
+        double angleLat = y / (this.ellipsoid.a());
+        double angleLon = x / (this.cosLat * this.ellipsoid.b());
+        return LatLonAlt.fromLatLonAltAndEllipsoid(
+            this.getLatitude() + angleLat * 180.0 / Math.PI, 
+            this.getLongitude() + angleLon * 180.0 / Math.PI,
+            this.getAltitude() + z,
+            this.ellipsoid
+        );
+    };
+
+    public LatLonAlt extrapolatePolar(double distance, double azimut) {
         if (distance < 0.0) {
             throw new IllegalArgumentException("distance should be >= 0.0, but is " + distance);
         }

@@ -193,11 +193,11 @@ describe('LatLonAlt', function () {
         });
     });
 
-    describe('#extrapolate', function () {
+    describe('#extrapolateVector', function () {
         it('should return an extrapolated position', function () {
             var position = new geo.LatLonAlt(53.0, 8.0, 0.0);
 
-            var actual = position.extrapolate(0.0, 111000.0, 10.0);
+            var actual = position.extrapolateVector(0.0, 111000.0, 10.0);
             var expected = new geo.LatLonAlt(54.0, 8.0, 10.0);
 
             assert.equal(Math.round(actual.getLatitude()), expected.getLatitude());
@@ -206,12 +206,38 @@ describe('LatLonAlt', function () {
         });
     });
 
-    describe('#extrapolate', function () {
+    describe('#extrapolateVector', function () {
         it('should return an extrapolated position', function () {
             var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
 
-            var actual = position.extrapolate(111000.0, 111000.0, 10.0);
+            var actual = position.extrapolateVector(111000.0, 111000.0, 10.0);
             var expected = new geo.LatLonAlt(1.0, 1.0, 10.0);
+
+            assert.equal(Math.round(actual.getLatitude()), expected.getLatitude());
+            assert.equal(Math.round(actual.getLongitude()), expected.getLongitude());
+            assert.equal(actual.getAltitude(), expected.getAltitude());
+        });
+    });
+
+    describe('#extrapolatePolar', function () {
+        it('should return an extrapolated position', function () {
+            var position = new geo.LatLonAlt(53.0, 8.0, 0.0);
+
+            var actual = position.extrapolatePolar(111000.0, 0.0);
+            var expected = new geo.LatLonAlt(54.0, 8.0, 0.0);
+
+            assert.equal(Math.round(actual.getLatitude()), expected.getLatitude());
+            assert.equal(actual.getLongitude(), expected.getLongitude());
+            assert.equal(actual.getAltitude(), expected.getAltitude());
+        });
+    });
+
+    describe('#extrapolatePolar', function () {
+        it('should return an extrapolated position', function () {
+            var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
+
+            var actual = position.extrapolatePolar(111000.0, Math.PI / 2.0);
+            var expected = new geo.LatLonAlt(0.0, 1.0, 0.0);
 
             assert.equal(Math.round(actual.getLatitude()), expected.getLatitude());
             assert.equal(Math.round(actual.getLongitude()), expected.getLongitude());
