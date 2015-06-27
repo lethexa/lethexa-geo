@@ -131,18 +131,29 @@
         return this._alt;
     };
 
+    exports.LatLonAlt.prototype.getCenterWith = function (p2, altitude) {
+        var centerLat = (this.getLatitude() + p2.getLatitude()) / 2.0;
+        var centerLon = (this.getLongitude() + p2.getLongitude()) / 2.0;
+        return new exports.LatLonAlt(
+                centerLat,
+                centerLon,
+                altitude,
+                this._ellipsoid
+        );
+    };
+
     exports.LatLonAlt.prototype.extrapolateVector = function (x, y, z) {
         var angleLat = y / (this._ellipsoid.a());
         var angleLon = x / (this._cosLat * this._ellipsoid.b());
         return new exports.LatLonAlt(
-            this.getLatitude() + angleLat * 180.0 / Math.PI, 
-            this.getLongitude() + angleLon * 180.0 / Math.PI,
-            this.getAltitude() + z,
-            this._ellipsoid
-        );
+                this.getLatitude() + angleLat * 180.0 / Math.PI,
+                this.getLongitude() + angleLon * 180.0 / Math.PI,
+                this.getAltitude() + z,
+                this._ellipsoid
+                );
     };
 
-    exports.LatLonAlt.prototype.extrapolatePolar = function(distance, azimut) {
+    exports.LatLonAlt.prototype.extrapolatePolar = function (distance, azimut) {
         if (distance < 0.0) {
             throw new Error("distance should be >= 0.0, but is " + distance);
         }
@@ -161,7 +172,7 @@
                 newLon * 180.0 / Math.PI,
                 this._alt,
                 this._ellipsoid
-        );
+                );
     };
 
     exports.LatLonAlt.prototype.getDistanceTo = function (to) {
@@ -192,7 +203,7 @@
             [this._cosLat * this._cosLon, this._cosLat * this._sinLon, this._sinLat]
         ];
     };
-    
+
     exports.LatLonAlt.prototype.toGlobalTransform = function () {
         return transposeMatrix3x3(this.toLocalTransform());
     };

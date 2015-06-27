@@ -176,6 +176,18 @@ public class LatLonAlt {
     public double getAltitude() {
         return alt;
     }
+    
+    public LatLonAlt getCenterWith( LatLonAlt p2, double altitude ) 
+    {
+        double centerLat = (getLatitude() + p2.getLatitude()) / 2.0;
+        double centerLon = (getLongitude() + p2.getLongitude()) / 2.0;
+        return LatLonAlt.fromLatLonAltAndEllipsoid(
+                centerLat,
+                centerLon,
+                altitude,
+                this.ellipsoid
+        );
+    }
 
     public double[][] toLocalTransform() {
         double[][] m = new double[][] {

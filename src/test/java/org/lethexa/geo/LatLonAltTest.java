@@ -69,6 +69,17 @@ public class LatLonAltTest {
     }
 
     @Test
+    public void testGetCenterWith() {
+        LatLonAlt position1 = LatLonAlt.fromLatLonAlt(54.0, 8.0, 0.0);
+        LatLonAlt position2 = LatLonAlt.fromLatLonAlt(53.0, 9.0, 0.0);
+
+        LatLonAlt actual = position1.getCenterWith(position2, 10.0);
+        LatLonAlt expected = LatLonAlt.fromLatLonAlt(53.5, 8.5, 10.0);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testGetDistanceTo() {
         LatLonAlt position1 = LatLonAlt.fromLatLonAlt(54.0, 8.125, 0.0);
         LatLonAlt position2 = LatLonAlt.fromLatLonAlt(53.0, 8.125, 0.0);

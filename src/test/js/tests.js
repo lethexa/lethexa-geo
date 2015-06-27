@@ -57,6 +57,20 @@ describe('LatLonAlt', function () {
         });
     });
 
+    describe('#getCenterWith()', function () {
+        it('should return altitude when getAltitude called', function () {
+            var geoPos1 = new geo.LatLonAlt(53.0, 8.0, 0.0);
+            var geoPos2 = new geo.LatLonAlt(54.0, 9.0, 0.0);
+
+            var actual = geoPos1.getCenterWith(geoPos2, 10.0);
+            var expected = new geo.LatLonAlt(53.5, 8.5, 10.0);
+
+            assert.equal(actual.getLatitude(), expected.getLatitude(), 0.0001);
+            assert.equal(actual.getLongitude(), expected.getLongitude(), 0.0001);
+            assert.equal(actual.getAltitude(), expected.getAltitude());
+        });
+    });
+
     describe('#getDistanceTo()', function () {
         it('should return distance when getDistanceTo called', function () {
             var position1 = new geo.LatLonAlt(54.0, 8.125, 0.0);
