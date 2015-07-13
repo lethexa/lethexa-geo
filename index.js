@@ -23,58 +23,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lethexa.geo;
 
-import junit.framework.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+/* global module, __dirname */
 
-@Ignore
-public class EllipsoidTest
-{
-    private static final double EPSILON = 0.000001;
-
-    @Test
-    public void testGetRadiusAt()
-    {
-        Ellipsoid ellipsoid = Ellipsoid.EARTH;
-
-        double actual = ellipsoid.getRadiusAt(0.0);
-        double expected = Ellipsoid.EARTH.a();
-
-        Assert.assertEquals(expected, actual, EPSILON);
-    }
-
-    @Test
-    public void testE2()
-    {
-        Ellipsoid ellipsoid = Ellipsoid.EARTH;
-
-        double actual = ellipsoid.e2();
-        double expected = 1.0 / 298.257223563;
-
-        Assert.assertEquals(expected, actual, EPSILON);
-    }
-
-    @Test
-    public void testCircumferenceA()
-    {
-        Ellipsoid ellipsoid = Ellipsoid.EARTH;
-
-        double actual = ellipsoid.circumferenceA();
-        double expected = 40075016.0;
-
-        Assert.assertEquals(expected, actual, 1.0);
-    }
-
-    @Test
-    public void testCircumferenceB()
-    {
-        Ellipsoid ellipsoid = Ellipsoid.EARTH;
-
-        double actual = ellipsoid.circumferenceB();
-        double expected = 39940652.0;
-
-        Assert.assertEquals(expected, actual, 1.0);
-    }
-}
+/**
+ * A module for geographic calculations
+ * @module geo
+ */
+module.exports = require('./lib/geo');

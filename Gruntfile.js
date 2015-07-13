@@ -10,8 +10,8 @@ module.exports = function (grunt) {
                 separator: '\n\n'
             },
             dist: {
-                src: ['src/main/js/**/*.js'],
-                dest: 'target/js/dist/<%= pkg.name %>.js'
+                src: ['lib/**/*.js'],
+                dest: 'dist/<%= pkg.name %>.js'
             }
         },
         yuidoc: {
@@ -21,8 +21,9 @@ module.exports = function (grunt) {
                 version: '<%= pkg.version %>',
 //        url: '<%= pkg.homepage %>',
                 options: {
-                    paths: ['src/main/js/'],
-                    outdir: 'target/js/doc/'
+                    paths: ['./', 'lib/'],
+		    exclude: 'dist,build,doc',
+                    outdir: 'doc/'
                 }
             }
         },
@@ -35,7 +36,7 @@ module.exports = function (grunt) {
             reporter: "nyan",
             ui: "tdd"
           },
-          all: ["src/test/js/tests.js"]
+          all: ["test/tests.js"]
         },        
         
         uglify: {
@@ -43,8 +44,8 @@ module.exports = function (grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> Copyright by <%= pkg.author.name %> <%= pkg.author.email %> */\n'
             },
             build: {
-                src: 'target/js/dist/<%= pkg.name %>.js',
-                dest: 'target/<%= pkg.name %>.min.js'
+                src: 'dist/<%= pkg.name %>.js',
+                dest: 'build/<%= pkg.name %>.min.js'
             }
         }
     });
@@ -53,7 +54,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
     grunt.registerTask('check', ['jshint']);

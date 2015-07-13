@@ -1,5 +1,5 @@
 var assert = require("assert");
-var geo = require("../../main/js/geo.js");
+var geo = require("../lib/geo.js");
 
 
 describe('Array', function () {
