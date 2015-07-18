@@ -1,5 +1,5 @@
 {
-  "name": "geo",
+  "name": "lethexa-geo",
   "version": "0.0.1",
   "description": "Geographic calculations",
   "main": "index.js",
@@ -9,6 +9,9 @@
   },
   "scripts": {
     "test": "jshint lib/"
+  },
+  "publishConfig": {
+    "registry": "http://npm.home.web:4873/"
   },
   "repository": {
     "type": "git",
