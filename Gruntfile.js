@@ -58,5 +58,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('check', ['jshint']);
     grunt.registerTask('test', ['mochacli']);
+    grunt.registerTask('jenkins', ['concat', 'jshint', 'mochacli', 'yuidoc', 'uglify']);
     grunt.registerTask('default', ['concat', 'jshint', 'mochacli', 'yuidoc', 'uglify']);
 };
