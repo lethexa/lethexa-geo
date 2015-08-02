@@ -16,3 +16,9 @@ Usage
 
 	console.log(distance);
 
+Contributors
+------------
+
+* Tim Leerhoff <tleerhof@web.de>
+
+
