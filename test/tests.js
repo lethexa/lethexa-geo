@@ -1,5 +1,6 @@
 var assert = require("assert");
-var geo = require("../lib/geo.js");
+//var geo = require("../lib/geo.js");
+var geo = require((process.env.APP_DIR_FOR_CODE_COVERAGE || '../lib/') + 'geo.js');
 
 
 describe('Array', function () {

@@ -2,8 +2,10 @@
 /dist/
 /build/
 /doc/
+/coverage/
 jenkins-grunt.sh
 npm-debug.log
 publishTag.sh
+results.txt
 .gitignore
 .*.swp

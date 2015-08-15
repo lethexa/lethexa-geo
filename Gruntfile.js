@@ -28,17 +28,50 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            all: ['target/js/dist/<%= pkg.name %>.js']
+            all: ['dist/<%= pkg.name %>.js']
         },
-        
-        mochacli: {
+
+        mochaTest: {
+          test: {
+            options: {
+              reporter: 'spec',
+              captureFile: 'results.txt', // Optionally capture the reporter output to a file
+              quiet: false, // Optionally suppress output to standard out (defaults to false)
+              clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false)
+            },
+            src: ['test/**/*.js']
+          }
+        },
+
+        env: {
+          coverage: {
+            APP_DIR_FOR_CODE_COVERAGE: '../coverage/instrument/lib/'
+          }
+        },
+
+        instrument: {
+          files: 'lib/*.js',
           options: {
-            reporter: "nyan",
-            ui: "tdd"
-          },
-          all: ["test/tests.js"]
-        },        
-        
+            lazy: true,
+            basePath: 'coverage/instrument/'
+          }
+        },
+
+        storeCoverage: {
+          options: {
+            dir: 'coverage/reports'
+          }
+        },
+       
+        makeReport: {
+          src: 'coverage/reports/**/*.json',
+          options: {
+            type: 'cobertura',
+            dir: 'coverage/reports',
+            print: 'detail'
+          }
+        },
+ 
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> Copyright by <%= pkg.author.name %> <%= pkg.author.email %> */\n'
@@ -50,14 +83,17 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks("grunt-mocha-cli");
+    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
+    grunt.loadNpmTasks('grunt-istanbul');
+    grunt.loadNpmTasks('grunt-env');
 
     grunt.registerTask('check', ['jshint']);
-    grunt.registerTask('test', ['mochacli']);
-    grunt.registerTask('jenkins', ['concat', 'jshint', 'mochacli', 'yuidoc', 'uglify']);
-    grunt.registerTask('default', ['concat', 'jshint', 'mochacli', 'yuidoc', 'uglify']);
+    grunt.registerTask('test', ['mochaTest']);
+    grunt.registerTask('coverage', ['concat', 'jshint', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport']);
+    grunt.registerTask('jenkins', ['concat', 'jshint', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport', 'uglify']);
+    grunt.registerTask('default', ['concat', 'jshint', 'mochaTest', 'yuidoc', 'uglify']);
 };
