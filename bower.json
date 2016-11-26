@@ -21,6 +21,12 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "Gruntfile.js",
+    "jenkins-grunt.sh",
+    "publishTag.sh",
+    "package.json",
+    "bower.json",
+    "lib",
     "test",
     "tests"
   ]
