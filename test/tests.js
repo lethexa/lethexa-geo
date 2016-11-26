@@ -3,16 +3,6 @@ var assert = require("assert");
 var geo = require((process.env.APP_DIR_FOR_CODE_COVERAGE || '../lib/') + 'geo.js');
 
 
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal(-1, [1, 2, 3].indexOf(5));
-            assert.equal(-1, [1, 2, 3].indexOf(0));
-        });
-    });
-});
-
-
 describe('Ellipsoid', function () {
     describe('#a()', function () {
         it('should return semimajor earthradius when earth selected', function () {
@@ -263,16 +253,45 @@ describe('LatLonAlt', function () {
 
 
 
-
 describe('cvtLatitudeToDegMinSec', function () {
     it("should return the string 53° 30' 00'' N for position 53.5", function () {
         assert.equal(geo.cvtLatitudeToDegMinSec(53.5), "53° 30' 00'' N");
     });
+
+    it("should return the string 53° 20' 00'' S for position -53.333333333333333", function () {
+        assert.equal(geo.cvtLatitudeToDegMinSec(-53.333333333333333), "53° 20' 00'' S");
+    });
+});
+
+describe('cvtLongitudeToDegMinSec', function () {
+    it("should return the string 008° 07' 30'' E for position 8.125", function () {
+        assert.equal(geo.cvtLongitudeToDegMinSec(8.125), "008° 07' 30'' E");
+    });
+
+
+    it("should return the string 008° 19' 59.99'' W for position -8.333333333333", function () {
+        assert.equal(geo.cvtLongitudeToDegMinSec(-8.333333333333333), "008° 19' 59.99'' W");
+    });
 });
 
 
-describe('cvtLongitudeToDegMinSec', function () {
-    it("should return the string 008° 30' 00'' N for position 8.125", function () {
-        assert.equal(geo.cvtLongitudeToDegMinSec(8.125), "008° 07' 30'' E");
+
+describe('cvtLatitudeToDecimalDegrees', function () {
+    it("should return the string 53.5° N for position 53.5", function () {
+        assert.equal(geo.cvtLatitudeToDecimalDegrees(53.5, 6), "53.5° N");
+    });
+
+    it("should return the string 53.333333° N for position 53.333333333333333", function () {
+        assert.equal(geo.cvtLatitudeToDecimalDegrees(53.333333333333333, 6), "53.333333° N");
+    });
+});
+
+describe('cvtLongitudeToDecimalDegrees', function () {
+    it("should return the string 8.125° E for position 8.125", function () {
+        assert.equal(geo.cvtLongitudeToDecimalDegrees(8.125, 6), "8.125° E");
+    });
+
+    it("should return the string 8.333333° E for position 8.333333333333333", function () {
+        assert.equal(geo.cvtLongitudeToDecimalDegrees(8.333333333333333, 6), "8.333333° E");
     });
 });
