@@ -1,6 +1,6 @@
 {
   "name": "lethexa-geo",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Geographic calculations",
   "main": "index.js",
   "author": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://git.home.web/base/js/geo.git"
+    "url": "ssh://git@cfg.home.web/~/base/js/geo.git"
   },
   "license": "MIT",
   "dependencies": {},
