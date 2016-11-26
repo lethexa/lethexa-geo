@@ -260,3 +260,19 @@ describe('LatLonAlt', function () {
         });
     });
 });
+
+
+
+
+describe('cvtLatitudeToDegMinSec', function () {
+    it("should return the string 53° 30' 00'' N for position 53.5", function () {
+        assert.equal(geo.cvtLatitudeToDegMinSec(53.5), "53° 30' 00'' N");
+    });
+});
+
+
+describe('cvtLongitudeToDegMinSec', function () {
+    it("should return the string 008° 30' 00'' N for position 8.125", function () {
+        assert.equal(geo.cvtLongitudeToDegMinSec(8.125), "008° 07' 30'' E");
+    });
+});
