@@ -268,7 +268,6 @@ describe('cvtLongitudeToDegMinSec', function () {
         assert.equal(geo.cvtLongitudeToDegMinSec(8.125), "008° 07' 30'' E");
     });
 
-
     it("should return the string 008° 19' 59.99'' W for position -8.333333333333", function () {
         assert.equal(geo.cvtLongitudeToDegMinSec(-8.333333333333333), "008° 19' 59.99'' W");
     });
