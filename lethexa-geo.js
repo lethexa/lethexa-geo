@@ -17,20 +17,37 @@
 
 	/**
 	 * Calculates the radius at the given getLatitude
+         * (Source: http://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude
+         * R(f)^2 = ( a^4 cos(f)^2 + b^4 sin(f)^2 ) / ( a^2 cos(f)^2 + b^2 sin(f)^2 ).)
 	 * @method getRadiusAt
-	 * @param radLat {Number} the latitude in radians at the given position
+	 * @param lat {Number} the latitude at the given position
 	 * @return {Number} The radius in meters
 	 */
-        this.getRadiusAt = function (radLat) {
+        this.getRadiusAt = function (lat) {
+            var a4 = a2 * a2;
+            var b4 = b2 * b2;
+            var radLat = lat * Math.PI / 180.0;
+            var cosLat = Math.cos(radLat);
             var sinLat = Math.sin(radLat);
-            var sinLatSquared = sinLat * sinLat;
-            return a * (1.0 - e2) / Math.pow((1.0 - e2 * sinLatSquared), 1.5);
+            var cos2Lat = cosLat * cosLat;
+            var sin2Lat = sinLat * sinLat;
+            return Math.sqrt((a4 * cos2Lat + b4 * sin2Lat) / (a2 * cos2Lat + b2 * sin2Lat));
         };
 
+        /**
+         * Radius at equator.
+         * @method a
+         * @return {Number} Radius at equator.
+         */
         this.a = function () {
             return a;
         };
 
+        /**
+         * Radius at pole.
+         * @method b
+         * @return {Number} Radius at pole.
+         */
         this.b = function () {
             return b;
         };
@@ -98,12 +115,16 @@
         this._radLat = lat * Math.PI / 180.0;
         this._radLon = lon * Math.PI / 180.0;
 
-        this._earthRadius = this._ellipsoid.getRadiusAt(this._radLat);
+        this._earthRadius = this._ellipsoid.getRadiusAt(lat);
 
         this._sinLat = Math.sin(this._radLat);
         this._cosLat = Math.cos(this._radLat);
         this._sinLon = Math.sin(this._radLon);
         this._cosLon = Math.cos(this._radLon);
+    };
+
+    exports.LatLonAlt.prototype.getEarthRadius = function () {
+        return this._earthRadius;
     };
 
     exports.LatLonAlt.prototype.getLatitude = function () {

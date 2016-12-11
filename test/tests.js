@@ -19,6 +19,22 @@ describe('Ellipsoid', function () {
             assert.equal(earthEllipsoid.b(), 6356752.3142);
         });
     });
+    
+    describe('#getRadiusAt()', function () {
+        it('should return semimajor earthradius when earth selected', function () {
+            var earthEllipsoid = geo.EARTH;
+
+            assert.equal(earthEllipsoid.getRadiusAt(0.0), 6378137.0);
+        });
+    });
+
+    describe('#getRadiusAt()', function () {
+        it('should return semiminor earthradius when earth selected', function () {
+            var earthEllipsoid = geo.EARTH;
+
+            assert.equal(earthEllipsoid.getRadiusAt(90), 6356752.3142);
+        });
+    });
 });
 
 
@@ -68,7 +84,7 @@ describe('LatLonAlt', function () {
             var position2 = new geo.LatLonAlt(53.0, 8.125, 0.0);
 
             var actual = position1.getDistanceTo(position2);
-            var expected = 111305.0;
+            var expected = 111075;
 
             assert.equal(Math.floor(actual), expected);
         });
