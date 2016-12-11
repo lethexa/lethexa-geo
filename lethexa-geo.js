@@ -87,6 +87,27 @@
 
 
 
+    // Calculates the tangent from a point to a circle.
+    var tangentFrom = function (px, py, radius) {
+        var cx = 0;
+        var cy = 0;
+        var dx = cx - px;
+        var dy = cy - py;
+        var dd = Math.sqrt(dx * dx + dy * dy);
+        var a = Math.asin(radius / dd);
+        var b = Math.atan2(dy, dx);
+        var t1 = b - a;
+        var t2 = b + a;
+        return {
+            p1: [radius *  Math.sin(t1), radius * -Math.cos(t1)],
+            p2: [radius * -Math.sin(t2), radius *  Math.cos(t2)],
+            center: [-radius * Math.cos(b), radius * -Math.sin(b)],
+            arclength: 2*a
+        };
+    };
+
+
+
     var DEFAULT_ELLIPSOID = exports.EARTH;
     var EPSILON = 0.001;
     var toRange0_2PI = function (x) {
@@ -137,6 +158,35 @@
 
     exports.LatLonAlt.prototype.getAltitude = function () {
         return this._alt;
+    };
+
+    /**
+     * Calculates the distance from this position to the tangent point on planet surface.
+     * @method getMeanTangentDistance
+     * @return The distance to the horizon.
+     */
+    exports.LatLonAlt.prototype.getDistanceToHorizon = function() {
+        var geocentric = this.toVec3();
+        var earthRadius2 = this._earthRadius * this._earthRadius;
+        var x = geocentric[0];
+        var y = geocentric[1];
+        var z = geocentric[2];
+        
+         // projected to 2d.
+        var viewerX = Math.sqrt(x*x+y*y);
+        var viewerY = z;
+        var viewerDistFromCenterSquared = viewerX * viewerX + viewerY * viewerY;
+        
+        if(viewerDistFromCenterSquared < earthRadius2)
+            return undefined;
+        var tangent = tangentFrom(viewerX, viewerY, this._earthRadius);
+        if(tangent === undefined)
+            return undefined;
+        
+        var diffX = viewerX - tangent.p1[0];
+        var diffY = viewerY - tangent.p1[1];
+        var distToTangentPoint = Math.sqrt(diffX * diffX + diffY * diffY);
+        return distToTangentPoint;
     };
 
     exports.LatLonAlt.prototype.getCenterWith = function (p2, altitude) {

@@ -64,6 +64,43 @@ describe('LatLonAlt', function () {
         });
     });
 
+
+
+
+
+    describe('#getDistanceToHorizon() - 0', function () {
+        it('should return the viewrange for a position on a planet', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, -1.0, geo.EARTH);
+            
+            var result = geoPos.getDistanceToHorizon();
+            
+            assert.equal(result, undefined);
+        });
+    });
+    
+    describe('#getDistanceToHorizon() - 1', function () {
+        it('should return the viewrange for a position on a planet', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, 50.0, geo.EARTH);
+            
+            var result = geoPos.getDistanceToHorizon();
+            
+            assert.equal(result, 25255.023262754818);
+        });
+    });
+    
+    describe('#getDistanceToHorizon() - 2', function () {
+        it('should return the viewrange for a position on a planet', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, 5000.0, geo.EARTH);
+            
+            var result = geoPos.getDistanceToHorizon();
+            
+            assert.equal(result, 252599.2280273183);
+        });
+    });
+
+
+
+
     describe('#getCenterWith()', function () {
         it('should return altitude when getAltitude called', function () {
             var geoPos1 = new geo.LatLonAlt(53.0, 8.0, 0.0);
