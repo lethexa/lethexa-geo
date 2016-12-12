@@ -67,7 +67,7 @@ describe('LatLonAlt', function () {
 
 
 
-
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getDistanceToHorizon() - 0', function () {
         it('should return the viewrange for a position on a planet', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, -1.0, geo.EARTH);
@@ -78,6 +78,7 @@ describe('LatLonAlt', function () {
         });
     });
     
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getDistanceToHorizon() - 1', function () {
         it('should return the viewrange for a position on a planet', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, 50.0, geo.EARTH);
@@ -88,6 +89,7 @@ describe('LatLonAlt', function () {
         });
     });
     
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getDistanceToHorizon() - 2', function () {
         it('should return the viewrange for a position on a planet', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, 5000.0, geo.EARTH);
@@ -99,7 +101,7 @@ describe('LatLonAlt', function () {
     });
 
 
-
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getAltitudeAboveHorizon() - 0', function () {
         it('should return the altitude to be seen from the given position', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, 0.0, geo.EARTH);
@@ -115,6 +117,7 @@ describe('LatLonAlt', function () {
         });
     });
 
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getAltitudeAboveHorizon() - 1', function () {
         it('should return the altitude to be seen from the given position', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, 50.0, geo.EARTH);
@@ -130,6 +133,7 @@ describe('LatLonAlt', function () {
         });
     });
 
+    // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
     describe('#getAltitudeAboveHorizon() - 2', function () {
         it('should return the altitude to be seen from the given position', function () {
             var geoPos = new geo.LatLonAlt(0.0, 0.0, 5000.0, geo.EARTH);
