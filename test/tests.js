@@ -100,6 +100,54 @@ describe('LatLonAlt', function () {
 
 
 
+    describe('#getAltitudeAboveHorizon() - 0', function () {
+        it('should return the altitude to be seen from the given position', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, 0.0, geo.EARTH);
+            var distance = 100000.0;
+            
+            var result = geoPos.getAltitudeAboveHorizon(distance);
+            var expected = {
+                altitude: 783.87980161421,
+                distance: 0.0
+            };
+            
+            assert.deepEqual(result, expected);
+        });
+    });
+
+    describe('#getAltitudeAboveHorizon() - 1', function () {
+        it('should return the altitude to be seen from the given position', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, 50.0, geo.EARTH);
+            var distance = 100000.0;
+            
+            var result = geoPos.getAltitudeAboveHorizon(distance);
+            var expected = {
+                altitude: 437.9507485181093,
+                distance: 25255.02326270954
+            };
+            
+            assert.deepEqual(result, expected);
+        });
+    });
+
+    describe('#getAltitudeAboveHorizon() - 2', function () {
+        it('should return the altitude to be seen from the given position', function () {
+            var geoPos = new geo.LatLonAlt(0.0, 0.0, 5000.0, geo.EARTH);
+            var distance = 100000.0;
+            
+            var result = geoPos.getAltitudeAboveHorizon(distance);
+            var expected = {
+                altitude: 0.0,
+                distance: 252599.22802732396
+            };
+            
+            assert.deepEqual(result, expected);
+        });
+    });
+
+
+
+
 
     describe('#getCenterWith()', function () {
         it('should return altitude when getAltitude called', function () {
