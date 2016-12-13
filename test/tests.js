@@ -227,6 +227,86 @@ describe('LatLonAlt', function () {
         });
     });
 
+    describe('#getElevationTo()', function () {
+        it('should return elevation=0 when two points near and at same altitude', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 1.0);
+            var position2 = new geo.LatLonAlt(0.0, 0.1, 1.0);
+
+            var actual = position1.getElevationTo(position2) * 180.0 / Math.PI;
+            var expected = 0.0;
+
+            assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('#getElevationTo()', function () {
+        it('should return elevation=-45 when two points near and at different altitude', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 1.0);
+            var position2 = new geo.LatLonAlt(0.0, 0.1, 11100.0);
+
+            var actual = position1.getElevationTo(position2) * 180.0 / Math.PI;
+            var expected = -45.0;
+
+            assert.equal(Math.round(actual), expected);
+        });
+    });
+
+    describe('#toRelativeVec3 - 1', function () {
+        it('should return a relative Vector from the position given position', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(1.0, 0.0, 0.0);
+
+            var result = position1.toRelativeVec3(position2);
+            var expected = [0.0, 110568.7748229952, -964.9195715757087];
+
+            assert.equal(result[0], expected[0]);
+            assert.equal(result[1], expected[1]);
+            assert.equal(result[2], expected[2]);
+        });
+    });
+
+    describe('#toRelativeVec3 - 2', function () {
+        it('should return a relative Vector from the position given position', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(0.0, 1.0, 0.0);
+
+            var result = position1.toRelativeVec3(position2);
+            var expected = [111313.83923667614, 0.0, -971.4211582997814];
+
+            assert.equal(result[0], expected[0]);
+            assert.equal(result[1], expected[1]);
+            assert.equal(result[2], expected[2]);
+        });
+    });
+
+    describe('#toRelativeVec3 - 3', function () {
+        it('should return a relative Vector from the position given position', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = new geo.LatLonAlt(0.0, -1.0, 0.0);
+
+            var result = position1.toRelativeVec3(position2);
+            var expected = [-111313.83923667614, 0.0, -971.4211582997814];
+
+            assert.equal(result[0], expected[0]);
+            assert.equal(result[1], expected[1]);
+            assert.equal(result[2], expected[2]);
+        });
+    });
+
+    describe('#fromRelativeVec3', function () {
+        it('should return a relative Vector from the position given position', function () {
+            var position1 = new geo.LatLonAlt(0.0, 0.0, 0.0);
+            var position2 = [0.0, 110568.7748229952, -964.9195715757087];
+
+            var result = position1.fromRelativeVec3(position2);
+            var expected = new geo.LatLonAlt(1.000000000000014, 0.0, 8.940696716308594e-8);
+
+            assert.equal(result.getLatitude(), expected.getLatitude(), 'Latitude problem');
+            assert.equal(result.getLongitude(), expected.getLongitude(), 'Longitude problem');
+            assert.equal(result.getAltitude(), expected.getAltitude(), 'Altitude problem');
+        });
+    });
+
     describe('#toVec3', function () {
         it('should return Vector when the position given', function () {
             var position = new geo.LatLonAlt(0.0, 0.0, 0.0);
