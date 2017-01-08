@@ -3,6 +3,7 @@
 /build/
 /doc/
 /coverage/
+/nbproject/
 jenkins-grunt.sh
 npm-debug.log
 publishTag.sh

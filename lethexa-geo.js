@@ -15,14 +15,14 @@
         var b2 = b * b;
         var e2 = (a2 - b2) / a2;
 
-	/**
-	 * Calculates the radius at the given getLatitude
+        /**
+         * Calculates the radius at the given getLatitude
          * (Source: http://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude
          * R(f)^2 = ( a^4 cos(f)^2 + b^4 sin(f)^2 ) / ( a^2 cos(f)^2 + b^2 sin(f)^2 ).)
-	 * @method getRadiusAt
-	 * @param lat {Number} the latitude at the given position
-	 * @return {Number} The radius in meters
-	 */
+         * @method getRadiusAt
+         * @param lat {Number} the latitude at the given position
+         * @return {Number} The radius in meters
+         */
         this.getRadiusAt = function (lat) {
             var a4 = a2 * a2;
             var b4 = b2 * b2;
@@ -94,9 +94,9 @@
      */
     var mulMatrixVector = function (m, u) {
         return [
-                m[0][0] * u[0] + m[0][1] * u[1] + m[0][2] * u[2],
-                m[1][0] * u[0] + m[1][1] * u[1] + m[1][2] * u[2],
-                m[2][0] * u[0] + m[2][1] * u[1] + m[2][2] * u[2]
+            m[0][0] * u[0] + m[0][1] * u[1] + m[0][2] * u[2],
+            m[1][0] * u[0] + m[1][1] * u[1] + m[1][2] * u[2],
+            m[2][0] * u[0] + m[2][1] * u[1] + m[2][2] * u[2]
         ];
     };
 
@@ -113,10 +113,10 @@
         var t1 = b - a;
         var t2 = b + a;
         return {
-            p1: [radius *  Math.sin(t1), radius * -Math.cos(t1)],
-            p2: [radius * -Math.sin(t2), radius *  Math.cos(t2)],
+            p1: [radius * Math.sin(t1), radius * -Math.cos(t1)],
+            p2: [radius * -Math.sin(t2), radius * Math.cos(t2)],
             center: [-radius * Math.cos(b), radius * -Math.sin(b)],
-            arclength: 2*a
+            arclength: 2 * a
         };
     };
 
@@ -125,7 +125,7 @@
     var DEFAULT_ELLIPSOID = exports.EARTH;
     var EPSILON = 0.001;
     var TWO_PI = 2.0 * Math.PI;
-    
+
     var toRange0_2PI = function (x) {
         while (x >= TWO_PI)
             x -= TWO_PI;
@@ -137,7 +137,7 @@
     var toRangePI_PI = function (x) {
         while (x >= Math.PI)
             x -= TWO_PI;
-        while (x < -Math.PI)
+        while (x < - Math.PI)
             x += TWO_PI;
         return x;
     };
@@ -188,24 +188,24 @@
      * @method getMeanTangentDistance
      * @return The distance to the horizon.
      */
-    exports.LatLonAlt.prototype.getDistanceToHorizon = function() {
+    exports.LatLonAlt.prototype.getDistanceToHorizon = function () {
         var geocentric = this.toVec3();
         var earthRadius2 = this._earthRadius * this._earthRadius;
         var x = geocentric[0];
         var y = geocentric[1];
         var z = geocentric[2];
-        
-         // projected to 2d.
-        var viewerX = Math.sqrt(x*x+y*y);
+
+        // projected to 2d.
+        var viewerX = Math.sqrt(x * x + y * y);
         var viewerY = z;
         var viewerDistFromCenterSquared = viewerX * viewerX + viewerY * viewerY;
-        
-        if(viewerDistFromCenterSquared < earthRadius2)
+
+        if (viewerDistFromCenterSquared < earthRadius2)
             return undefined;
         var tangent = tangentFrom(viewerX, viewerY, this._earthRadius);
-        if(tangent === undefined)
+        if (tangent === undefined)
             return undefined;
-        
+
         var diffX = viewerX - tangent.p1[0];
         var diffY = viewerY - tangent.p1[1];
         var distToTangentPoint = Math.sqrt(diffX * diffX + diffY * diffY);
@@ -224,18 +224,18 @@
         var planetRadius2 = planetRadius * planetRadius;
         var alt = this._alt;
         var alt2 = alt * alt;
-        
+
         var d1 = Math.sqrt(alt2 + 2.0 * planetRadius * alt);
         var d0 = distance - d1;
         var h1 = Math.sqrt(d0 * d0 + planetRadius2) - planetRadius;
-        
-        if(distance < d1)
+
+        if (distance < d1)
             h1 = 0.0;
-        return { 
-            altitude: h1, 
+        return {
+            altitude: h1,
             distance: d1
         };
-    };    
+    };
 
     exports.LatLonAlt.prototype.getCenterWith = function (p2, altitude) {
         var centerLat = (this.getLatitude() + p2.getLatitude()) / 2.0;
@@ -245,7 +245,7 @@
                 centerLon,
                 altitude,
                 this._ellipsoid
-        );
+                );
     };
 
     exports.LatLonAlt.prototype.extrapolateVector = function (x, y, z) {
@@ -380,8 +380,7 @@
             cosTempLat = Math.cos(radTempLat);
 
             alt = xy / cosTempLat - dV;
-        }
-        while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
+        } while (Math.abs(dOldLat - radTempLat) > EPSILON || Math.abs(dOldAlt - alt) > EPSILON);
 
         return new exports.LatLonAlt(
                 radTempLat * 180.0 / Math.PI,
@@ -391,91 +390,302 @@
                 );
     };
 
-    exports.LatLonAlt.prototype.toString = function() {
-      return '' + this._lat + '°, ' + this._lon + '°, ' + this._alt + 'm';
+    exports.LatLonAlt.prototype.toString = function () {
+        return '' + this._lat + '°, ' + this._lon + '°, ' + this._alt + 'm';
     };
 
 
-    var fillLeadingZeros = function(value, num) {
+    var fillLeadingZeros = function (value, num) {
         var result = '' + value;
-        var factor = Math.pow(10, num-1);
-        if(num <= 1)
+        var factor = Math.pow(10, num - 1);
+        if (num <= 1)
             return result;
-        while(factor !== 1) {
-            result = (value < factor ? '0': '') + result;
+        while (factor !== 1) {
+            result = (value < factor ? '0' : '') + result;
             factor /= 10;
         }
         return result;
     };
 
-    var fracValue = function(value, fracs) {
+    var fracValue = function (value, fracs) {
         var factor = Math.pow(10, fracs);
         return Math.floor(value * factor) / factor;
     };
 
-    var cvtToDegMinSec = function(value) {
+    var cvtToDegMinSec = function (value) {
         var rest;
         var floored;
         value = Math.abs(value);
-        
-        floored = Math.floor(value);        
+
+        floored = Math.floor(value);
         var deg = floored;
-        
+
         rest = value - floored;
         value = rest * 60.0;
         floored = Math.floor(value);
         var min = floored;
-        
+
         rest = value - floored;
         value = rest * 60.0;
         floored = Math.floor(value);
         var sec = value;
-        
-        return {deg: deg, min: min, sec: sec };
+
+        return {deg: deg, min: min, sec: sec};
     };
 
-    exports.cvtLatitudeToDegMinSec = function(lat) {
+    exports.cvtLatitudeToDegMinSec = function (lat) {
         var latValues = cvtToDegMinSec(Math.abs(lat));
         var asString = '';
         asString += fillLeadingZeros(latValues.deg, 2) + '° ';
         asString += fillLeadingZeros(latValues.min, 2) + "' ";
         asString += fillLeadingZeros(fracValue(latValues.sec, 2), 2) + "''";
-        if(lat >= 0.0)
+        if (lat >= 0.0)
             return asString + ' N';
         else
             return asString + ' S';
     };
 
-    exports.cvtLongitudeToDegMinSec = function(lon) {
+    exports.cvtLongitudeToDegMinSec = function (lon) {
         var lonValues = cvtToDegMinSec(Math.abs(lon));
         var asString = '';
         asString += fillLeadingZeros(lonValues.deg, 3) + '° ';
         asString += fillLeadingZeros(lonValues.min, 2) + "' ";
         asString += fillLeadingZeros(fracValue(lonValues.sec, 2), 2) + "''";
-        if(lon >= 0.0)
+        if (lon >= 0.0)
             return asString + ' E';
         else
             return asString + ' W';
-    };    
+    };
 
-    exports.cvtLatitudeToDecimalDegrees = function(lat, frac) {
-        if(frac === undefined)
+    exports.cvtLatitudeToDecimalDegrees = function (lat, frac) {
+        if (frac === undefined)
             throw Error('frac is missing');
         var asString = fracValue(Math.abs(lat), frac) + "°";
-        if(lat >= 0.0)
+        if (lat >= 0.0)
             return asString + ' N';
         else
             return asString + ' S';
-    };    
+    };
 
-    exports.cvtLongitudeToDecimalDegrees = function(lon, frac) {
-        if(frac === undefined)
+    exports.cvtLongitudeToDecimalDegrees = function (lon, frac) {
+        if (frac === undefined)
             throw Error('frac is missing');
         var asString = fracValue(Math.abs(lon), frac) + "°";
-        if(lon >= 0.0)
+        if (lon >= 0.0)
             return asString + ' E';
         else
             return asString + ' W';
-    };    
+    };
+
+
+
+
+    /**
+     * Class for projecting the mercator projection.
+     * The earth coordinates range is lon[-180..180], lat[-85,0511..85,0511].
+     * The mercator map coordinates range is x[-180..180], y[-85,0511..85,0511].
+     * @class MercatorProjection
+     * @constructor
+     */
+    module.exports.MercatorProjection = function () {
+        var Rx = 180.0 / Math.PI;
+        var Ry = (170.1022 / 2) / Math.PI;
+
+        /**
+         * Projects from map to earth coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-85,0511..85,0511].
+         * The mercator map coordinates range is x[-180..180], y[-85,0511..85,0511].
+         * @method mapToEarth
+         * @param mapPos {Array} An array in the form [x, y].
+         * @return {Array} An array in the form [lon, lat].
+         */
+        this.mapToEarth = function (mapPos) {
+            try {
+                var x = mapPos[0];
+                var y = mapPos[1];
+                var lonRad = x / Rx;
+                var b = y / Ry;
+                if (lonRad > Math.PI) {
+                    lonRad = Math.PI;
+                }
+                if (lonRad < -Math.PI) {
+                    lonRad = -Math.PI;
+                }
+                var lat = 2.0 * Math.atan(Math.pow(Math.E, b)) - 0.5 * Math.PI;
+                return [lonRad * 180.0 / Math.PI, lat * 180.0 / Math.PI];
+            } catch (err) {
+                console.log(err, err.stack);
+            }
+        };
+
+        /**
+         * Projects from earth to map coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-85,0511..85,0511].
+         * The mercator map coordinates range is x[-180..180], y[-85,0511..85,0511].
+         * @method earthToMap
+         * @param earthPos {Array} An array in the form [lon, lat].
+         * @return {Array} An array in the form [x, y].
+         */
+        this.earthToMap = function (earthPos) {
+            try {
+                var lon = earthPos[0];
+                var lonRad = lon * Math.PI / 180.0;
+                var lat = earthPos[1];
+                var latRad = lat * Math.PI / 180.0;
+                var sinLat = Math.sin(latRad);
+                var a = (1.0 + sinLat) / (1.0 - sinLat);
+
+                var x = lonRad * Rx;
+                var y = 0.5 * Math.log(a) * Ry;
+                return [x, y];
+            } catch (err) {
+                console.log(err, err.stack);
+            }
+        };
+    };
+
+    /**
+     * Class for projecting the 1:1 projection.
+     * The earth coordinates range is lon[-180..180], lat[-90..90].
+     * The mercator map coordinates range is x[-180..180], y[-90..90].
+     * @class MercatorProjection
+     * @constructor
+     */
+    module.exports.LLXYProjection = function () {
+
+        /**
+         * Projects from map to earth coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90].
+         * The mercator map coordinates range is x[-180..180], y[-90..90].
+         * @method mapToEarth
+         * @param mapPos {Array} An array in the form [x, y].
+         * @return {Array} An array in the form [lon, lat].
+         */
+        this.mapToEarth = function (mapPos)
+        {
+            return [mapPos[0], mapPos[1]];
+        };
+
+        /**
+         * Projects from earth to map coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90].
+         * The mercator map coordinates range is x[-180..180], y[-90..90].
+         * @method earthToMap
+         * @param earthPos {Array} An array in the form [lon, lat].
+         * @return {Array} An array in the form [x, y].
+         */
+        this.earthToMap = function (earthPos)
+        {
+            return [earthPos[0], earthPos[1]];
+        };
+    };
+
+    /**
+     * Class for a cylinder-projection.
+     * The earth coordinates range is lon[-180..180], lat[-90..90].
+     * The mercator map coordinates range is x[-180..180], y[-90..90].
+     * @class MercatorProjection
+     * @constructor
+     */
+    module.exports.CylinderProjection = function () {
+
+        /**
+         * Projects from map to earth coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90].
+         * The mercator map coordinates range is x[-180..180], y[-90..90].
+         * @method mapToEarth
+         * @param mapPos {Array} An array in the form [x, y].
+         * @return {Array} An array in the form [lon, lat].
+         */
+        this.mapToEarth = function (mapPos)
+        {
+            return [mapPos[0] * 180.0, Math.asin(mapPos[1]) * 180.0 / Math.PI];
+        };
+
+        /**
+         * Projects from earth to map coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90].
+         * The mercator map coordinates range is x[-180..180], y[-90..90].
+         * @method earthToMap
+         * @param earthPos {Array} An array in the form [lon, lat].
+         * @return {Array} An array in the form [x, y].
+         */
+        this.earthToMap = function (earthPos)
+        {
+            return [earthPos[0] / 180.0, Math.sin(earthPos[1] * Math.PI / 180.0)];
+        };
+    };
+
+
+
+    /**
+     * Helper class for projecting.
+     * The earth coordinates range is lon[-180..180], lat[-90..90] (depending on projection).
+     * The mercator map coordinates range is x[-180..180], y[-90..90] (depending on projection).
+     * @class MercatorProjection
+     * @constructor
+     */
+    module.exports.Projector = function (projection) {
+        var self = this;
+
+        /**
+         * Projects from map to earth coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90] (depending on projection).
+         * The mercator map coordinates range is x[-180..180], y[-90..90] (depending on projection).
+         * @method mapToEarth
+         * @param mapPos {Array} An array in the form [x, y].
+         * @return {Array} An array in the form [lon, lat].
+         */
+        this.mapToEarth = function (mapPos) {
+            return projection.mapToEarth(mapPos);
+        };
+
+        /**
+         * Projects from earth to map coordinates.
+         * The earth coordinates range is lon[-180..180], lat[-90..90] (depending on projection).
+         * The mercator map coordinates range is x[-180..180], y[-90..90] (depending on projection).
+         * @method earthToMap
+         * @param earthPos {Array} An array in the form [lon, lat].
+         * @return {Array} An array in the form [x, y].
+         */
+        this.earthToMap = function (earthPos) {
+            return projection.earthToMap(earthPos);
+        };
+
+        this.viewToMap = function (viewBox, viewPos) {
+            var x = viewPos[0];
+            var y = viewPos[1];
+            var xMinView = viewBox[0];
+            var yMinView = viewBox[1];
+            var xMaxView = viewBox[2];
+            var yMaxView = viewBox[3];
+            var xMap = x * (xMaxView - xMinView) + xMinView;
+            var yMap = y * (yMaxView - yMinView) + yMinView;
+            return [xMap, yMap]; //-180..180, -90..90
+        };
+
+        this.mapToView = function (viewBox, mapPos) {
+            var xMap = mapPos[0];
+            var yMap = mapPos[1];
+            var xMinView = viewBox[0];
+            var yMinView = viewBox[1];
+            var xMaxView = viewBox[2];
+            var yMaxView = viewBox[3];
+            var x = (xMap - xMinView) / (xMaxView - xMinView);
+            var y = (yMap - yMinView) / (yMaxView - yMinView);
+            return [x, y]; // 0..1, 0..1
+        };
+
+        this.cvtPtToEarth = function (viewBox, viewPt) {
+            var mapPt = self.viewToMap(viewBox, viewPt);
+            return self.mapToEarth(mapPt);
+        };
+
+        this.cvtPtToView = function (viewBox, earthPt) {
+            var mapPt = self.earthToMap(earthPt);
+            return self.mapToView(viewBox, mapPt);
+        };
+    };
+
 })(typeof exports === 'undefined' ? this.geo = {} : exports);
 

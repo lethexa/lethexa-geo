@@ -19,6 +19,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "nbproject",
     "node_modules",
     "bower_components",
     "Gruntfile.js",

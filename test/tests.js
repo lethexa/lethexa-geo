@@ -479,3 +479,27 @@ describe('cvtLongitudeToDecimalDegrees', function () {
         assert.equal(geo.cvtLongitudeToDecimalDegrees(8.333333333333333, 6), "8.333333° E");
     });
 });
+
+
+
+describe('Projector', function () {
+    describe('#mapToView()', function () {
+        it('should return the view coordinate of a map', function () {
+            var projector = new geo.Projector(new geo.LLXYProjection());
+            
+            var result = projector.mapToView([8, 53, 9, 54], [8.5, 53.5]);
+
+            assert.deepEqual(result, [0.5, 0.5]);
+        });
+    });
+
+    describe('#viewToMap()', function () {
+        it('should return the map coordinate of a view', function () {
+            var projector = new geo.Projector(new geo.LLXYProjection());
+            
+            var result = projector.viewToMap([8, 53, 9, 54], [0.5, 0.5]);
+
+            assert.deepEqual(result, [8.5, 53.5]);
+        });
+    });
+});
