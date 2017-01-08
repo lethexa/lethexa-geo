@@ -149,6 +149,10 @@
             [m[0][2], m[1][2], m[2][2]]
         ];
     };
+    
+    exports.fromLonLatAltArray = function(array, ellipsoid) {
+        return new exports.LatLonAlt(array[1], array[0], array[2] ? array[2] : 0.0, ellipsoid);
+    };
 
     exports.LatLonAlt = function (lat, lon, alt, ellipsoid) {
         this._ellipsoid = ellipsoid || DEFAULT_ELLIPSOID;
@@ -342,6 +346,10 @@
             relpos[1] + v[1],
             relpos[2] + v[2]
         ]);
+    };
+    
+    exports.LatLonAlt.prototype.toLonLatAltArray = function() {
+        return [this._lon, this._lat, this._alt];
     };
 
     exports.LatLonAlt.prototype.toVec3 = function () {

@@ -65,6 +65,26 @@ describe('LatLonAlt', function () {
     });
 
 
+    describe('#fromLonLatAltArray()', function () {
+        it('should return an initialized position', function () {
+            var geoPos = geo.fromLonLatAltArray([8.125, 53.5, 1000.0]);
+
+            assert.equal(geoPos.getLatitude(), 53.5);
+            assert.equal(geoPos.getLongitude(), 8.125);
+            assert.equal(geoPos.getAltitude(), 1000.0);
+        });
+    });
+
+
+    describe('#fromLonLatAltArray()', function () {
+        it('should return an initialized position', function () {
+            var geoPos = geo.fromLonLatAltArray([8.125, 53.5, 1000.0]);
+
+            assert.deepEqual(geoPos.toLonLatAltArray(), [8.125, 53.5, 1000.0]);
+        });
+    });
+
+
 
 
     // Checked against https://dizzib.github.io/earth/curve-calc/?d0=111&h0=300&unit=metric
