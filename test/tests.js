@@ -483,6 +483,27 @@ describe('cvtLongitudeToDecimalDegrees', function () {
 
 
 describe('Projector', function () {
+    describe('#mapToEarth()', function () {
+        it('should return the earth coordinate of a map-position', function () {
+            var projector = new geo.Projector(new geo.LLXYProjection());
+            
+            var result = projector.mapToEarth([8, 53]);
+
+            assert.deepEqual(result, [8, 53]);
+        });
+    });
+
+    describe('#earthToMap()', function () {
+        it('should return the map-position of an earth coordinate', function () {
+            var projector = new geo.Projector(new geo.LLXYProjection());
+            
+            var result = projector.earthToMap([8, 53]);
+
+            assert.deepEqual(result, [8, 53]);
+        });
+    });
+
+
     describe('#mapToView()', function () {
         it('should return the view coordinate of a map', function () {
             var projector = new geo.Projector(new geo.LLXYProjection());
