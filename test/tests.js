@@ -76,7 +76,7 @@ describe('LatLonAlt', function () {
     });
 
 
-    describe('#fromLonLatAltArray()', function () {
+    describe('#toLonLatAltArray()', function () {
         it('should return an initialized position', function () {
             var geoPos = geo.fromLonLatAltArray([8.125, 53.5, 1000.0]);
 
