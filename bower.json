@@ -5,7 +5,6 @@
   "authors": [
     "Tim Leerhoff <tleerhof@web.de>"
   ],
-  "private": true,
   "description": "Geographic calculations",
   "moduleType": [
     "amd",
