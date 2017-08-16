@@ -1,7 +1,7 @@
 { 
   "name": "lethexa-geo",
   "main": "lethexa-geo.js",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "authors": [
     "Tim Leerhoff <tleerhof@web.de>"
   ],

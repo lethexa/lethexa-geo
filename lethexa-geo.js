@@ -495,7 +495,7 @@
      * @class MercatorProjection
      * @constructor
      */
-    module.exports.MercatorProjection = function () {
+    exports.MercatorProjection = function () {
         var Rx = 180.0 / Math.PI;
         var Ry = (170.1022 / 2) / Math.PI;
 
@@ -559,7 +559,7 @@
      * @class MercatorProjection
      * @constructor
      */
-    module.exports.LLXYProjection = function () {
+    exports.LLXYProjection = function () {
 
         /**
          * Projects from map to earth coordinates.
@@ -595,7 +595,7 @@
      * @class MercatorProjection
      * @constructor
      */
-    module.exports.CylinderProjection = function () {
+    exports.CylinderProjection = function () {
 
         /**
          * Projects from map to earth coordinates.
@@ -633,7 +633,7 @@
      * @class MercatorProjection
      * @constructor
      */
-    module.exports.Projector = function (projection) {
+    exports.Projector = function (projection) {
         var self = this;
 
         /**
