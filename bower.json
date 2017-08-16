@@ -14,7 +14,9 @@
     "node"
   ],
   "keywords": [
-    "geo"
+    "Transformation",
+    "Geodetic",
+    "Geocentric"
   ],
   "license": "MIT",
   "ignore": [

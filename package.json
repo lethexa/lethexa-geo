@@ -10,12 +10,14 @@
   "scripts": {
     "test": "jshint lib/"
   },
-  "publishConfig": {
-    "registry": "http://npm.home.web:4873/"
-  },
+  "keywords": [
+    "Transformation",
+    "Geodetic",
+    "Geocentric"
+  ],
   "repository": {
     "type": "git",
-    "url": "ssh://git@cfg.home.web/~/base/js/lethexa-geo.git"
+    "url": "git@github.com:lethexa/lethexa-geo.git"
   },
   "license": "MIT",
   "dependencies": {},
